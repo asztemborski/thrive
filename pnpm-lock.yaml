@@ -45,6 +45,15 @@ importers:
       '@nestjs/testing':
         specifier: ^10.0.0
         version: 10.4.1(@nestjs/common@10.4.1(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/core@10.4.1(@nestjs/common@10.4.1(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/platform-express@10.4.1)(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/platform-express@10.4.1(@nestjs/common@10.4.1(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/core@10.4.1))
+      '@packages/nest-ddd':
+        specifier: workspace:*
+        version: link:../../packages/nest-ddd
+      '@packages/nest-exceptions':
+        specifier: workspace:*
+        version: link:../../packages/nest-exceptions
+      '@packages/nest-utilities':
+        specifier: workspace:*
+        version: link:../../packages/nest-utilities
       '@tooling/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
