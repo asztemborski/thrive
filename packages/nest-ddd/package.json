@@ -1,0 +1,16 @@
+{
+  "name": "@packages/nest-ddd",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "private": true,
+  "dependencies": {
+    "@nestjs/event-emitter": "^2.0.4",
+    "@packages/nest-utilities": "workspace:*",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@tooling/typescript-config": "workspace:*",
+    "@types/uuid": "^10.0.0"
+  }
+}

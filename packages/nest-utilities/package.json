@@ -1,0 +1,13 @@
+{
+  "name": "@packages/nest-utilities",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "private": true,
+  "dependencies": {
+    "class-validator": "^0.14.1"
+  },
+  "devDependencies": {
+    "@tooling/typescript-config": "workspace:*"
+  }
+}
