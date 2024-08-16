@@ -1,0 +1,8 @@
+services:
+  identity-service:
+    container_name: identity-service
+    build:
+      context: .
+      dockerfile: apps/identity-service/Dockerfile
+    volumes:
+      - .:/usr/src/app
