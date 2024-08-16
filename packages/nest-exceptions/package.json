@@ -1,0 +1,10 @@
+{
+  "name": "@packages/nest-exceptions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "private": true,
+  "devDependencies": {
+    "@tooling/typescript-config": "workspace:*"
+  }
+}
