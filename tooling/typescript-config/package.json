@@ -6,5 +6,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "files": ["base.json", "nestjs.json"]
+  "files": [
+    "base.json", "nestjs.json"]
 }

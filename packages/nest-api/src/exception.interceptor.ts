@@ -27,7 +27,7 @@ export class ExceptionInterceptor implements NestInterceptor {
     next: CallHandler,
   ): Observable<unknown> | Promise<Observable<unknown>> {
     return next.handle().pipe(
-      catchError((error) => {
+      catchError((error: unknown) => {
         if (error instanceof ExceptionBase) {
           error = createErrorApiResponse(error);
         }
