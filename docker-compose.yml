@@ -55,6 +55,18 @@ services:
     depends_on:
       db:
         condition: service_healthy
+  notifications-service:
+    container_name: notifications-service
+    build:
+      context: .
+      dockerfile: apps/notifications-service/Dockerfile
+    volumes:
+      - .:/usr/src/app
+    env_file:
+      - .env
+      - ${NOTIFICATIONS_ENV}
+    networks:
+      - backend
 
 networks:
   backend:
