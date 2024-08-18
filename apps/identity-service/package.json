@@ -23,6 +23,7 @@
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/swagger": "^7.4.0",
     "@packages/nest-api": "workspace:*",
     "@packages/nest-ddd": "workspace:*",
     "@packages/nest-exceptions": "workspace:*",

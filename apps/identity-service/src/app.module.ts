@@ -1,11 +1,12 @@
 import { Logger, Module, OnApplicationBootstrap } from '@nestjs/common';
 import { TypedConfigModule } from 'nest-typed-config';
 import { Pool } from 'pg';
-import { Kysely, PostgresDialect } from 'kysely';
+import { CamelCasePlugin, Kysely, PostgresDialect } from 'kysely';
 import { InjectKysely, KyselyModule } from '@packages/nest-kysely';
 
 import { AppConfig, configOptions } from './config';
 import migrate from './database/migrate';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -15,9 +16,11 @@ import migrate from './database/migrate';
         dialect: new PostgresDialect({
           pool: new Pool(database),
         }),
+        plugins: [new CamelCasePlugin()],
       }),
       inject: [AppConfig],
     }),
+    UserModule,
   ],
   controllers: [],
   providers: [],
