@@ -2,8 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Kysely } from 'kysely';
 import { InjectKysely } from '@packages/nest-kysely';
 
-import { IUserRepository } from '../contracts/user-repository.contract';
-import { IUserMapper } from '../contracts/user-mapper.contract';
+import { IUserMapper, IUserRepository } from '../contracts';
 import { User } from '../domain/user.entity';
 import { Database } from '../../database/schema';
 
