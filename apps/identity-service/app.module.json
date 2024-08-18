@@ -1,0 +1,10 @@
+{
+  "frontendUrl": "http://localhost:3000",
+  "database": {
+    "port": "${POSTGRES_PORT}",
+    "host": "${POSTGRES_HOST}",
+    "database": "${POSTGRES_NAME}",
+    "user": "${POSTGRES_USERNAME}",
+    "password": "${POSTGRES_PASSWORD}"
+  }
+}

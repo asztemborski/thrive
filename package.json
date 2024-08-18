@@ -7,6 +7,10 @@
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
+  "dependencies": {
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0"
+  },
   "devDependencies": {
     "prettier": "^3.2.5",
     "turbo": "^2.0.14",

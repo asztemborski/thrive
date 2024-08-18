@@ -1,7 +1,7 @@
 import { Email } from './email.value-object';
 import { Username } from './username.value-object';
 import { EmailAlreadyConfirmedException } from './exceptions';
-import { AggregateRoot } from '@packages/nest-ddd/src/aggregate-root.base';
+import { AggregateRoot } from '@packages/nest-ddd';
 
 type UserProperties = {
   email: Email;

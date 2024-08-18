@@ -1,4 +1,18 @@
 services:
+  db:
+    image: postgres
+    env_file:
+      - .env
+    container_name: postgres-db
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend
   identity-service:
     container_name: identity-service
     build:
@@ -6,3 +20,15 @@ services:
       dockerfile: apps/identity-service/Dockerfile
     volumes:
       - .:/usr/src/app
+    env_file:
+      - .env
+      - ${IDENTITY_ENV}
+    networks:
+      - backend
+    depends_on:
+      db:
+        condition: service_healthy
+
+networks:
+  backend:
+    driver: bridge

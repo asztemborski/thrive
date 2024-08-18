@@ -1,0 +1,20 @@
+{
+  "name": "@packages/nest-kysely",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "commonjs",
+  "scripts": {
+    "build": "tsc"
+  },
+  "private": true,
+  "dependencies": {
+    "@nestjs/common": "^10.0.0",
+    "kysely": "^0.27.4",
+    "@packages/nest-utilities": "workspace:*"
+  },
+  "devDependencies": {
+    "@tooling/typescript-config": "workspace:*"
+  }
+}
