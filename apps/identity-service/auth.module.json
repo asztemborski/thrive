@@ -1,0 +1,6 @@
+{
+  "accessTokenSecretKey": "${ACCESS_TOKEN_SECRET_KEY}",
+  "accessTokenExpirationTime": "5m",
+  "refreshTokenSecretKey": "${REFRESH_TOKEN_SECRET_KEY}",
+  "refreshTokenExpirationTime": "3d"
+}
