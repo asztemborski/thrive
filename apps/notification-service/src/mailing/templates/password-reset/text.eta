@@ -1,0 +1,7 @@
+Hi <%= it.username %>.
+
+We received a request to change the password for your account. If you made this request, please copy the link below to reset your password:
+
+<%= it.url %>
+
+For security purposes, this link will expire in 15 hours. If you did not request a password change, please ignore this email. Your password will remain unchanged.

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Password Reset Request</title>
+</head>
+<body>
+    <div>
+        <h2>Password Reset Request</h2>
+        <p>Hi <%= it.username %>,</p>
+        <p>We received a request to change the password for your account. If you made this request, please click the link below to reset your password:</p>
+        <p>
+            <a href="<%= it.url %>">Reset Password</a>
+        </p>
+        <p>For security purposes, this link will expire in 15 hours. If you did not request a password change, please ignore this email. Your password will remain unchanged.</p>
+        <p>Best regards,<br>Your Company Team</p>
+    </div>
+</body>
+</html>

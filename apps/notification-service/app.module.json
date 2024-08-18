@@ -1,0 +1,6 @@
+{
+  "rabbitmq": {
+    "url": "${RABBITMQ_URL}",
+    "queue": "${IDENTITY_QUEUE}"
+  }
+}

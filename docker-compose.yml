@@ -26,6 +26,27 @@ services:
       REDIS_ARGS: "--requirepass ${REDIS_PASSWORD} --user ${REDIS_USERNAME} on >${REDIS_PASSWORD} ~* allcommands --user default off nopass nocommands"
     env_file:
       - .env
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    build:
+      context: .
+      dockerfile: tooling/rabbitmq/Dockerfile
+    hostname: rabbitmq
+    volumes:
+      - /var/lib/rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    networks:
+      - backend
+    env_file:
+      - .env
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:15672" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
   traefik:
     image: traefik:v2.10
     container_name: traefik
@@ -38,8 +59,8 @@ services:
       - backend
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./traefik/traefik.yml:/etc/traefik/traefik.yml"
-      - "./traefik:/etc/traefik/traefik_dynamic"
+      - "./tooling/traefik/traefik.yml:/etc/traefik/traefik.yml"
+      - "./tooling/traefik:/etc/traefik/traefik_dynamic"
   identity-service:
     container_name: identity-service
     build:
@@ -55,11 +76,11 @@ services:
     depends_on:
       db:
         condition: service_healthy
-  notifications-service:
-    container_name: notifications-service
+  notification-service:
+    container_name: notification-service
     build:
       context: .
-      dockerfile: apps/notifications-service/Dockerfile
+      dockerfile: apps/notification-service/Dockerfile
     volumes:
       - .:/usr/src/app
     env_file:
@@ -67,6 +88,9 @@ services:
       - ${NOTIFICATIONS_ENV}
     networks:
       - backend
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
 
 networks:
   backend:

@@ -8,7 +8,7 @@ WORKDIR /app
 RUN pnpm install turbo --global
 
 COPY . .
-RUN turbo prune notifications-service --docker
+RUN turbo prune notification-service --docker
 
 FROM base as runner
 WORKDIR /app
@@ -20,6 +20,6 @@ RUN pnpm install
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
 
-RUN pnpm turbo build --filter=notifications-service...
+RUN pnpm turbo build --filter=notification-service...
 
-CMD ["node", "apps/notifications-service/dist/main.js"]
+CMD ["node", "apps/notification-service/dist/main.js"]
