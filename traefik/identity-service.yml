@@ -1,0 +1,44 @@
+http:
+  routers:
+    identity-private:
+      rule: "PathPrefix(`/identity/v1/private`)"
+      service: identity
+      entryPoints:
+        - web
+      middlewares:
+        - stripprefix-identity
+        - cors-headers
+        - jwt-auth
+
+    identity-public:
+      rule: "PathPrefix(`/identity/v1/public`) || PathPrefix(`/identity/docs`)"
+      service: identity
+      entryPoints:
+        - web
+      middlewares:
+        - stripprefix-identity
+        - cors-headers
+
+  services:
+    identity:
+      loadBalancer:
+        servers:
+          - url: "http://identity-service:3101"
+
+  middlewares:
+    stripprefix-identity:
+      stripPrefix:
+        prefixes:
+          - "/identity"
+    jwt-auth:
+      forwardAuth:
+        address: "http://identity-service:3101/v1/public/auth/validate"
+        authResponseHeaders:
+          - "x-user"
+    cors-headers:
+      headers:
+        accessControlAllowOriginList:
+          - "http://localhost:3000"
+        accessControlAllowMethods: "GET, PUT, POST, DELETE, OPTIONS"
+        accessControlAllowHeaders: "*"
+        accessControlMaxAge: "86400"
