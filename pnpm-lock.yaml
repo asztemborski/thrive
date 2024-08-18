@@ -54,6 +54,9 @@ importers:
       '@packages/nest-kysely':
         specifier: workspace:*
         version: link:../../packages/nest-kysely
+      '@packages/nest-redis':
+        specifier: workspace:*
+        version: link:../../packages/nest-redis
       '@packages/nest-utilities':
         specifier: workspace:*
         version: link:../../packages/nest-utilities

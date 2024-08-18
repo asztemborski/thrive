@@ -3,10 +3,13 @@ import { TypedConfigModule } from 'nest-typed-config';
 import { Pool } from 'pg';
 import { CamelCasePlugin, Kysely, PostgresDialect } from 'kysely';
 import { InjectKysely, KyselyModule } from '@packages/nest-kysely';
+import { RedisModule } from '@packages/nest-redis';
 
 import { AppConfig, configOptions } from './config';
 import migrate from './database/migrate';
 import { UserModule } from './user/user.module';
+import { RedisConfig } from './config/redis.config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -20,7 +23,12 @@ import { UserModule } from './user/user.module';
       }),
       inject: [AppConfig],
     }),
+    RedisModule.forRootAsync({
+      inject: [RedisConfig],
+      useFactory: (redisConfig: RedisConfig) => redisConfig,
+    }),
     UserModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

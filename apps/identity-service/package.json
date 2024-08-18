@@ -30,6 +30,7 @@
     "@packages/nest-exceptions": "workspace:*",
     "@packages/nest-kysely": "workspace:*",
     "@packages/nest-utilities": "workspace:*",
+    "@packages/nest-redis": "workspace:*",
     "@types/bcryptjs": "^2.4.6",
     "@types/pg": "^8.11.6",
     "bcryptjs": "^2.4.3",

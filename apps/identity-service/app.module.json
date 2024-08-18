@@ -6,5 +6,11 @@
     "database": "${POSTGRES_NAME}",
     "user": "${POSTGRES_USERNAME}",
     "password": "${POSTGRES_PASSWORD}"
+  },
+  "redis": {
+    "port": "${REDIS_PORT}",
+    "host": "${REDIS_HOST}",
+    "username": "${REDIS_USERNAME}",
+    "password": "${REDIS_PASSWORD}"
   }
 }
