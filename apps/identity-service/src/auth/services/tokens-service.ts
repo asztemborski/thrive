@@ -60,8 +60,8 @@ export class TokensService implements ITokenService {
     return this.redis.getdel(key[0]);
   }
 
-  async revokeAllRefreshTokens(accountId: string): Promise<void> {
-    const refreshTokens = await this.redis.keys(`${accountId}-*`);
+  async revokeAllRefreshTokens(userId: string): Promise<void> {
+    const refreshTokens = await this.redis.keys(`${userId}-*`);
 
     if (refreshTokens.length <= 0) return;
 

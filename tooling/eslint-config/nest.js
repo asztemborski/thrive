@@ -10,6 +10,7 @@ module.exports = {
   ignorePatterns: ["dist/*"],
   plugins: ["@typescript-eslint"],
   rules: {
+    "no-void": "off",
     "no-useless-constructor": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
