@@ -12,5 +12,9 @@
     "host": "${REDIS_HOST}",
     "username": "${REDIS_USERNAME}",
     "password": "${REDIS_PASSWORD}"
+  },
+  "rabbitmq": {
+    "url": "${RABBITMQ_URL}",
+    "queue": "${IDENTITY_QUEUE}"
   }
 }

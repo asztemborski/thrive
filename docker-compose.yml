@@ -76,6 +76,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
   notification-service:
     container_name: notification-service
     build:

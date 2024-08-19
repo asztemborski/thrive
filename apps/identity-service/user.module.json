@@ -1,4 +1,7 @@
 {
+  "emailVerificationUrl": "en/auth/confirm-email",
+  "emailVerificationDisabled": false,
+  "emailVerificationTokenExpirationTime": "15m",
   "bannedEmailProviders": [
     "0-mail.com",
     "027168.com",

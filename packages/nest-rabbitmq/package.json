@@ -1,5 +1,5 @@
 {
-  "name": "@packages/nest-utilities",
+  "name": "@packages/nest-rabbitmq",
   "version": "1.0.0",
   "description": "",
   "main": "./dist/index.js",
@@ -11,7 +11,9 @@
   "private": true,
   "dependencies": {
     "@nestjs/common": "^10.0.0",
-    "class-validator": "^0.14.1"
+    "@nestjs/microservices": "^10.4.1",
+    "amqp-connection-manager": "^4.1.14",
+    "amqplib": "^0.10.4"
   },
   "devDependencies": {
     "@tooling/typescript-config": "workspace:*"

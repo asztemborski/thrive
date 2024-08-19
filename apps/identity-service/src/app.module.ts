@@ -3,12 +3,12 @@ import { TypedConfigModule } from 'nest-typed-config';
 import { Pool } from 'pg';
 import { CamelCasePlugin, Kysely, PostgresDialect } from 'kysely';
 import { InjectKysely, KyselyModule } from '@packages/nest-kysely';
+import { RabbitmqModule } from '@packages/nest-rabbitmq';
 import { RedisModule } from '@packages/nest-redis';
 
-import { AppConfig, configOptions } from './config';
+import { AppConfig, configOptions, RabbitmqConfig, RedisConfig } from './config';
 import migrate from './database/migrate';
 import { UserModule } from './user/user.module';
-import { RedisConfig } from './config/redis.config';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
@@ -27,6 +27,15 @@ import { AuthModule } from './auth/auth.module';
       inject: [RedisConfig],
       useFactory: (redisConfig: RedisConfig) => redisConfig,
     }),
+    RabbitmqModule.forRootAsync([
+      {
+        useFactory: (config: RabbitmqConfig) => ({
+          urls: [config.url],
+          queue: config.queue,
+        }),
+        inject: [RabbitmqConfig],
+      },
+    ]),
     UserModule,
     AuthModule,
   ],

@@ -20,7 +20,7 @@ export class MailingService implements IMailingService {
     const eta = new Eta({
       views: path.resolve(
         process.cwd(),
-        path.join('apps', 'notifications', 'src', 'mail', 'templates'),
+        path.join('apps', 'notification-service', 'src', 'mailing', 'templates'),
       ),
     });
 
@@ -33,48 +33,45 @@ export class MailingService implements IMailingService {
       mail.templateContext,
     );
 
-    await transporter.sendMail({
-      from: `${this.mailingConfig.displayName} <${this.mailingConfig.mail}>`,
-      to: receiver,
-      subject: mail.subject,
-      text: textContent,
-      html: htmlContent,
-    });
+    try {
+      await transporter.sendMail({
+        from: `${this.mailingConfig.displayName} <${this.mailingConfig.mail}>`,
+        to: receiver,
+        subject: mail.subject,
+        text: textContent,
+        html: htmlContent,
+      });
+    } catch (error) {
+      mail.onError && mail.onError(error);
+      throw error;
+    }
+
+    mail.onSuccess && mail.onSuccess();
   }
 
   async sendVerification(receiver: string, confirmUrl: string, username: string): Promise<void> {
     this.logger.log(`Sending verification email to ${receiver}`);
 
-    try {
-      await this.sendMail(receiver, {
-        subject: 'Thrive | Mail verification',
-        templateDirectory: 'email-verification',
-        templateContext: { confirmUrl, username },
-      });
-    } catch (error) {
-      this.logger.error(`Error while sending verification email to user: ${receiver}`);
-
-      throw error;
-    }
-
-    this.logger.log('Verification email sent successfully');
+    await this.sendMail(receiver, {
+      subject: 'Thrive | Mail verification',
+      templateDirectory: 'email-verification',
+      templateContext: { confirmUrl, username },
+      onSuccess: () => this.logger.log('Verification email sent successfully'),
+      onError: () =>
+        this.logger.error(`Error while sending verification email to user: ${receiver}`),
+    });
   }
 
   async sendPasswordReset(receiver: string, url: string, username: string): Promise<void> {
     this.logger.log(`Sending password reset email to ${receiver}`);
 
-    try {
-      await this.sendMail(receiver, {
-        subject: 'Thrive | Password reset',
-        templateDirectory: 'password-reset',
-        templateContext: { url, username },
-      });
-    } catch (error) {
-      this.logger.error(`Error while sending password reset email to user: ${receiver}`);
-
-      throw error;
-    }
-
-    this.logger.log('Password reset email sent successfully');
+    await this.sendMail(receiver, {
+      subject: 'Thrive | Password reset',
+      templateDirectory: 'password-reset',
+      templateContext: { url, username },
+      onSuccess: () => this.logger.log('Password reset email sent successfully'),
+      onError: () =>
+        this.logger.error(`Error while sending password reset email to user: ${receiver}`),
+    });
   }
 }

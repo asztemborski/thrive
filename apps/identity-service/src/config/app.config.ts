@@ -6,6 +6,7 @@ import * as process from 'node:process';
 
 import { DatabaseConfig } from './database.config';
 import { RedisConfig } from './redis.config';
+import { RabbitmqConfig } from './rabbitmq.config';
 
 export class AppConfig {
   @IsString()
@@ -21,6 +22,11 @@ export class AppConfig {
   @ValidateNested()
   @IsDefined()
   readonly redis: RedisConfig;
+
+  @Type(() => RabbitmqConfig)
+  @ValidateNested()
+  @IsDefined()
+  readonly rabbitmq: RabbitmqConfig;
 }
 
 export const configOptions: TypedConfigModuleOptions = {
