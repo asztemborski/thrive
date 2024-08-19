@@ -1,0 +1,110 @@
+{
+  "LandingPage": {
+    "WelcomeSection": {
+      "header": "Zarządzaj projektami z łatwością",
+      "description": "Usprawnij zarządzanie projektami dzięki naszej aplikacji - potężnemu narzędziu do organizacji zadań, śledzenia postępów i poprawy współpracy zespołowej."
+    },
+    "DescriptionSection": {
+      "header": "Efektywne zarządzanie projektami",
+      "description": "Nasza aplikacja zapewnia efektywne rozwiązania zarządzania projektami, umożliwiając bezproblemową współpracę i skuteczną komunikację. Wzmacnia zespoły, aby dostarczały projekty na czas i w ramach budżetu."
+    },
+    "StatisticsSection": {
+      "projectsCreated": "Utworzone projekty",
+      "applicationMembers": "Członkowie aplikacji",
+      "tasksAssigned": "Przypisane zadania",
+      "pageVisitors": "Odwiedzający stronę"
+    },
+    "Footer": {
+      "title": "Zacznij zarządzać projektami już dziś"
+    },
+    "signIn": "Zaloguj się",
+    "getStarted": "Rozpocznij",
+    "about": "O nas",
+    "contact": "Kontakt"
+  },
+  "InputErrorMessages": {
+    "required": "To pole jest wymagane",
+    "minLength": "To pole musi zawierać co najmniej {number} znaków",
+    "passwordMatch": "Hasła nie pasują do siebie",
+    "invalidEmail": "Nieprawidłowy adres email"
+  },
+  "ApiErrorMessages": {
+    "Thrive": {
+      "Exception": "Wystąpił błąd podczas obsługi twojego żądania."
+    },
+    "Identity": {
+      "InvalidEmailProvider": "Podany dostawca adresów e-mail nie jest prawidłowym dostawcą adresów e-mail.",
+      "EmailUsed": "Podany adres e-mail jest już używany.",
+      "UsernameUsed": "Podana nazwa użytkownika jest już używana.",
+      "Unauthorized": "Nieprawidłowe dane uwierzytelniające."
+    }
+  },
+  "SignUpPage": {
+    "back": "Wstecz",
+    "signUp": "Zarejestruj się",
+    "description": "Dołącz do naszej platformy, aby rozpocząć"
+  },
+  "SignUpForm": {
+    "email": {
+      "label": "Email",
+      "placeholder": "Wpisz swój adres email"
+    },
+    "username": {
+      "label": "Nazwa użytkownika",
+      "placeholder": "Wpisz swoją nazwę użytkownika"
+    },
+    "password": {
+      "label": "Hasło",
+      "placeholder": "Wpisz swoje hasło"
+    },
+    "confirmPassword": {
+      "label": "Potwierdź hasło",
+      "placeholder": "Potwierdź swoje hasło"
+    },
+    "agreements": "Rejestrując się, zgadzasz się na nasze",
+    "termsAndPolicy": "Warunki i politykę prywatności",
+    "accountExists": "Masz już konto?",
+    "logIn": "Zaloguj się",
+    "signUp": "Zarejestruj się"
+  },
+  "ConfirmEmailAlertDialog": {
+    "title": "Potwierdź swój adres email",
+    "description": "Prosimy zweryfikować swój adres email, aby aktywować swoje konto. Sprawdź swoją skrzynkę odbiorczą w poszukiwaniu wiadomości z linkiem potwierdzającym. Dziękujemy!",
+    "continue": "Kontynuuj"
+  },
+  "ErrorAlertDialog": {
+    "title": "Ups! Coś poszło nie tak!",
+    "continue": "Kontynuuj"
+  },
+  "ConfirmEmailPage": {
+    "success": {
+      "title": "Twój adres e-mail został potwierdzony",
+      "description": "Możesz teraz zalogować się na swoje nowe konto",
+      "signIn": "Zaloguj się"
+    },
+    "error": {
+      "title": "Coś poszło nie tak!",
+      "description": "Wystąpił błąd podczas potwierdzania Twojego adresu e-mail",
+      "back": "Wstecz"
+    }
+  },
+  "SignInPage": {
+    "back": "Wstecz",
+    "signIn": "Zaloguj się",
+    "description": "Wprowadź swój adres email i hasło poniżej, aby się zalogować"
+  },
+  "SignInForm": {
+    "email": {
+      "label": "Email",
+      "placeholder": "Wpisz swój adres email"
+    },
+    "password": {
+      "label": "Hasło",
+      "placeholder": "Wpisz swoje hasło"
+    },
+    "noAccount": "Nie masz konta?",
+    "signIn": "Zaloguj się",
+    "continueWith": "Lub kontynuuj z",
+    "signUp": "Zarejestruj się"
+  }
+}
