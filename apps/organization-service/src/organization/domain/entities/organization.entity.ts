@@ -25,10 +25,6 @@ type CreateOrganizationProperties = {
 };
 
 export class Organization extends AggregateRoot<OrganizationProperties> {
-  private constructor(properties: OrganizationProperties) {
-    super(properties);
-  }
-
   static create(properties: CreateOrganizationProperties): Organization {
     return new Organization({
       ...properties,
