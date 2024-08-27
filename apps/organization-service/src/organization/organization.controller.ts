@@ -1,5 +1,5 @@
 import { CommandBus } from '@nestjs/cqrs';
-import { Body, Post } from '@nestjs/common';
+import { Body, Param, Post } from '@nestjs/common';
 import { PrivateController, User, UserPayload } from '@packages/nest-api';
 
 import { CreateInvitationRequestDto, CreateOrganizationRequestDto } from './dtos';
@@ -18,9 +18,12 @@ export class PrivateOrganizationController {
     return await this.commandBus.execute(command);
   }
 
-  @Post('invitation')
-  async createInvitation(@Body() request: CreateInvitationRequestDto): Promise<void> {
-    const command = new CreateInvitationCommand(request);
+  @Post(':organizationId/invitation')
+  async createInvitation(
+    @Body() request: CreateInvitationRequestDto,
+    @Param('organizationId') organizationId: string,
+  ): Promise<void> {
+    const command = new CreateInvitationCommand({ ...request, organizationId });
     await this.commandBus.execute(command);
   }
 }
