@@ -1,15 +1,12 @@
+import { CamelCasePlugin, Kysely, PostgresDialect } from 'kysely';
 import { Logger, Module, OnApplicationBootstrap } from '@nestjs/common';
 import { TypedConfigModule } from 'nest-typed-config';
-import { Pool } from 'pg';
-import { CamelCasePlugin, Kysely, PostgresDialect } from 'kysely';
 import { InjectKysely, KyselyModule } from '@packages/nest-kysely';
-import { RabbitmqModule } from '@packages/nest-rabbitmq';
-import { RedisModule } from '@packages/nest-redis';
+import { Pool } from 'pg';
 import { migrate } from '@database/database';
 
-import { AppConfig, configOptions, RabbitmqConfig, RedisConfig } from './config';
-import { UserModule } from './user/user.module';
-import { AuthModule } from './auth/auth.module';
+import { OrganizationModule } from './organization/organization.module';
+import { AppConfig, configOptions } from './config';
 
 @Module({
   imports: [
@@ -23,21 +20,7 @@ import { AuthModule } from './auth/auth.module';
       }),
       inject: [AppConfig],
     }),
-    RedisModule.forRootAsync({
-      inject: [RedisConfig],
-      useFactory: (redisConfig: RedisConfig) => redisConfig,
-    }),
-    RabbitmqModule.forRootAsync([
-      {
-        useFactory: (config: RabbitmqConfig) => ({
-          urls: [config.url],
-          queue: config.queue,
-        }),
-        inject: [RabbitmqConfig],
-      },
-    ]),
-    UserModule,
-    AuthModule,
+    OrganizationModule,
   ],
   controllers: [],
   providers: [],

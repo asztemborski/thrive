@@ -4,7 +4,9 @@ export type DomainPrimitive<T extends Primitive> = {
   value: T;
 };
 
-type ValueObjectProperties<T> = T extends Primitive ? DomainPrimitive<T> : T;
+export type ValueObjectProperties<T> = T extends Primitive
+  ? DomainPrimitive<T>
+  : T;
 
 export abstract class ValueObject<T> {
   protected readonly properties: Readonly<ValueObjectProperties<T>>;

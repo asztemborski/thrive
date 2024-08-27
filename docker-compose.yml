@@ -93,6 +93,22 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+  organization-service:
+    container_name: organization-service
+    build:
+      context: .
+      dockerfile: apps/organization-service/Dockerfile
+    volumes:
+      - .:/usr/src/app
+    env_file:
+      - .env
+    networks:
+      - backend
+    depends_on:
+      db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
 
 networks:
   backend:
