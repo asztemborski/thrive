@@ -29,7 +29,6 @@
     "@packages/nest-drizzle": "workspace:*",
     "@packages/nest-utilities": "workspace:*",
     "@packages/nest-exceptions": "workspace:*",
-    "@database/database": "workspace:*",
     "@nestjs/cqrs": "^10.2.7",
     "reflect-metadata": "^0.1.13",
     "nest-typed-config": "^2.9.3",
