@@ -4,7 +4,6 @@ import { MemberSchema, OrganizationSchema } from '../database';
 export const IOrganizationMapper = Symbol('__ORGANIZATION_ORGANIZATION_MAPPER__');
 
 export type OrganizationToDomainSchema = OrganizationSchema & {
-  owner: MemberSchema;
   members: MemberSchema[];
 };
 

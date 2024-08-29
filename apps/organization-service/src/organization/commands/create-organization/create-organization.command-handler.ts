@@ -19,18 +19,17 @@ export class CreateOrganizationCommandHandler
   async execute(command: CreateOrganizationCommand): Promise<string> {
     const { username, id } = command.user;
 
-    const owner = new OrganizationMember({
+    const owner = OrganizationMember.create({
       name: username,
       userId: id,
-      roles: [],
     });
 
     const organization = Organization.create({
       name: new OrganizationName({ value: command.name }),
       description: command.description,
-      owner,
     });
 
+    organization.addMember(owner);
     await this.organizationRepository.create(organization);
     await this.memberRepository.create(owner, organization.id);
 

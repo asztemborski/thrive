@@ -2,6 +2,7 @@ import { ExceptionBase } from '@packages/nest-exceptions';
 import {
   ORGANIZATION_CANNOT_REMOVE_OWNER,
   ORGANIZATION_MEMBER_ALREADY_EXISTS,
+  ORGANIZATION_MEMBER_IS_ALREADY_OWNER,
   ORGANIZATION_MEMBER_NOT_FOUND,
   ORGANIZATION_NAME_MAX_LENGTH,
   ORGANIZATION_ROLE_ALREADY_ASSIGNED,
@@ -44,5 +45,11 @@ export class OrganizationRoleNotFoundException extends ExceptionBase {
 export class CannotRemoveOrganizationOwnerException extends ExceptionBase {
   constructor() {
     super(`Owner can't be removed from his own organization`, ORGANIZATION_CANNOT_REMOVE_OWNER);
+  }
+}
+
+export class MemberIsAlreadyOwnerException extends ExceptionBase {
+  constructor() {
+    super('Member is already an owner', ORGANIZATION_MEMBER_IS_ALREADY_OWNER);
   }
 }

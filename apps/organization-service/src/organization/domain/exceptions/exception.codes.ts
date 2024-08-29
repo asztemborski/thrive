@@ -4,3 +4,4 @@ export const ORGANIZATION_MEMBER_ALREADY_EXISTS = 'Organization.MemberAlreadyExi
 export const ORGANIZATION_ROLE_ALREADY_ASSIGNED = 'Organization.RoleAlreadyAssigned';
 export const ORGANIZATION_ROLE_NOT_FOUND = 'Organization.RoleNotFound';
 export const ORGANIZATION_CANNOT_REMOVE_OWNER = 'Organization.CannotRemoveOwner';
+export const ORGANIZATION_MEMBER_IS_ALREADY_OWNER = 'Organization.MemberIsAlreadyOwner';

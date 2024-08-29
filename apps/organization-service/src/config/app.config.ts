@@ -5,12 +5,18 @@ import * as path from 'node:path';
 import * as process from 'node:process';
 
 import { DatabaseConfig } from './database.config';
+import { RedisConfig } from './redis.config';
 
 export class AppConfig {
   @Type(() => DatabaseConfig)
   @ValidateNested()
   @IsDefined()
   readonly database: DatabaseConfig;
+
+  @Type(() => RedisConfig)
+  @ValidateNested()
+  @IsDefined()
+  readonly redis: RedisConfig;
 }
 
 export const configOptions: TypedConfigModuleOptions = {

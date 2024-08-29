@@ -1,13 +1,18 @@
-import { CommandBus } from '@nestjs/cqrs';
-import { Body, Param, Post } from '@nestjs/common';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { Body, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { PrivateController, User, UserPayload } from '@packages/nest-api';
 
-import { CreateInvitationRequestDto, CreateOrganizationRequestDto } from './dtos';
-import { CreateInvitationCommand, CreateOrganizationCommand } from './commands';
+import { CreateOrganizationRequestDto, GetOrganizationResponseDto } from './dtos';
+import { CreateOrganizationCommand } from './commands';
+import { GetOrganizationQuery } from './queries/get-organization';
+import { OrganizationMemberGuard } from '../common/guards';
 
 @PrivateController({ version: '1', path: 'organization' })
 export class PrivateOrganizationController {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
+  ) {}
 
   @Post()
   async createOrganization(
@@ -18,12 +23,12 @@ export class PrivateOrganizationController {
     return await this.commandBus.execute(command);
   }
 
-  @Post(':organizationId/invitation')
-  async createInvitation(
-    @Body() request: CreateInvitationRequestDto,
+  @Get(':organizationId')
+  @UseGuards(OrganizationMemberGuard)
+  async getOrganization(
     @Param('organizationId') organizationId: string,
-  ): Promise<void> {
-    const command = new CreateInvitationCommand({ ...request, organizationId });
-    await this.commandBus.execute(command);
+  ): Promise<GetOrganizationResponseDto> {
+    const query = new GetOrganizationQuery(organizationId);
+    return await this.queryBus.execute(query);
   }
 }

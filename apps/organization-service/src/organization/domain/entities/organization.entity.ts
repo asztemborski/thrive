@@ -13,14 +13,12 @@ type OrganizationProperties = {
   name: OrganizationName;
   description: string;
   iconUrl: string | null;
-  owner: OrganizationMember;
   members: OrganizationMember[];
   roles: OrganizationRole[];
 };
 
 type CreateOrganizationProperties = {
   name: OrganizationName;
-  owner: OrganizationMember;
   description: string;
 };
 
@@ -29,7 +27,7 @@ export class Organization extends AggregateRoot<OrganizationProperties> {
     return new Organization({
       ...properties,
       roles: [],
-      members: [properties.owner],
+      members: [],
       iconUrl: null,
     });
   }
@@ -39,11 +37,21 @@ export class Organization extends AggregateRoot<OrganizationProperties> {
       throw new OrganizationMemberAlreadyExistsException();
     }
 
+    if (this.members.length === 0) {
+      member.setAsOwner();
+    }
+
     this.properties.members.push(member);
   }
 
   removeMember(memberId: string): void {
-    if (memberId === this.properties.owner.id) {
+    const member = this.findMemberById(memberId);
+
+    if (!member) {
+      throw new OrganizationMemberNotFoundException();
+    }
+
+    if (member.isOwner) {
       throw new CannotRemoveOrganizationOwnerException();
     }
 

@@ -1,2 +1,2 @@
-export * from './create-invitation.request.dto';
 export * from './create-organization.request.dto';
+export * from './get-organization.response.dto';

@@ -13,6 +13,7 @@ export class MemberMapper implements IMemberMapper {
       id: properties.id,
       name: properties.name,
       userId: properties.userId,
+      isOwner: properties.isOwner,
       organizationId,
     };
   }
@@ -23,6 +24,7 @@ export class MemberMapper implements IMemberMapper {
       name: schema.name,
       userId: schema.userId,
       roles: [],
+      isOwner: schema.isOwner,
     });
   }
 }

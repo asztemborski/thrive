@@ -17,20 +17,17 @@ export class OrganizationMapper implements IOrganizationMapper {
       description: properties.description,
       iconUrl: properties.iconUrl,
       name: properties.name.value,
-      ownerId: properties.owner.id,
     };
   }
 
   toDomain(schema: OrganizationToDomainSchema): Organization {
-    const owner = this.memberMapper.toDomain(schema.owner);
     const members = schema.members.map((member) => this.memberMapper.toDomain(member));
 
     return new Organization({
       ...schema,
       name: new OrganizationName({ value: schema.name }),
-      members: members.length ? members : [owner],
+      members: members,
       roles: [],
-      owner,
     });
   }
 }

@@ -27,9 +27,6 @@ importers:
 
   apps/identity-service:
     dependencies:
-      '@database/database':
-        specifier: workspace:*
-        version: link:../../database
       '@nestjs/common':
         specifier: ^10.0.0
         version: 10.4.1(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
@@ -296,9 +293,6 @@ importers:
 
   apps/organization-service:
     dependencies:
-      '@database/database':
-        specifier: workspace:*
-        version: link:../../database
       '@nestjs/common':
         specifier: ^10.0.0
         version: 10.4.1(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
@@ -326,12 +320,18 @@ importers:
       '@packages/nest-exceptions':
         specifier: workspace:*
         version: link:../../packages/nest-exceptions
+      '@packages/nest-redis':
+        specifier: workspace:*
+        version: link:../../packages/nest-redis
       '@packages/nest-utilities':
         specifier: workspace:*
         version: link:../../packages/nest-utilities
       drizzle-orm:
         specifier: ^0.30.9
         version: 0.30.10(@types/pg@8.11.6)(@types/react@18.3.3)(kysely@0.27.4)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1)
+      ioredis:
+        specifier: ^5.4.1
+        version: 5.4.1
       nest-typed-config:
         specifier: ^2.9.3
         version: 2.9.3(@nestjs/common@10.4.1(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1))(axios@1.7.4)(reflect-metadata@0.1.14)(rxjs@7.8.1)(typescript@5.4.5)
@@ -520,19 +520,6 @@ importers:
       typescript:
         specifier: ^5
         version: 5.4.5
-
-  database:
-    dependencies:
-      kysely:
-        specifier: ^0.27.4
-        version: 0.27.4
-    devDependencies:
-      '@nestjs/common':
-        specifier: ^10.0.0
-        version: 10.4.1(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
-      '@tooling/typescript-config':
-        specifier: workspace:*
-        version: link:../tooling/typescript-config
 
   packages/nest-api:
     dependencies:
