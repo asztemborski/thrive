@@ -1,5 +1,5 @@
 {
-  "name": "@packages/nest-kysely",
+  "name": "@packages/nest-drizzle",
   "version": "1.0.0",
   "description": "",
   "main": "./dist/index.js",
@@ -11,7 +11,8 @@
   "private": true,
   "dependencies": {
     "@nestjs/common": "^10.0.0",
-    "kysely": "^0.27.4",
+    "postgres": "^3.4.4",
+    "drizzle-orm": "^0.30.9",
     "@packages/nest-utilities": "workspace:*"
   },
   "devDependencies": {

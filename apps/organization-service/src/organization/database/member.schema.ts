@@ -1,10 +1,14 @@
-import { Selectable } from 'kysely';
+import { pgSchema, uuid, varchar } from 'drizzle-orm/pg-core';
+import { organizations } from './organization.schema';
+import { InferSelectModel } from 'drizzle-orm';
 
-export interface MemberTable {
-  id: string;
-  userId: string;
-  name: string;
-  organizationId: string;
-}
+const schema = pgSchema('organization');
 
-export type MemberSchema = Selectable<MemberTable>;
+export const members = schema.table('member', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  userId: uuid('user_id').notNull().unique(),
+  name: varchar('name').notNull(),
+  organizationId: uuid('organization_id').references(() => organizations.id),
+});
+
+export type MemberSchema = InferSelectModel<typeof members>;

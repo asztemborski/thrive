@@ -1,5 +1,8 @@
-import { UserTable } from '../user/database';
+import * as userSchema from '../user/database/user.schema';
+import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 
-export interface Database {
-  'identity.user': UserTable;
-}
+type DatabaseSchema = typeof userSchema;
+
+export type Database = PostgresJsDatabase<DatabaseSchema>;
+
+export const schema = { ...userSchema };

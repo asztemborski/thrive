@@ -1,11 +1,14 @@
-import { Selectable } from 'kysely';
+import { boolean, pgSchema, uuid, varchar } from 'drizzle-orm/pg-core';
+import { InferSelectModel } from 'drizzle-orm';
 
-export interface UserTable {
-  id: string;
-  emailAddress: string;
-  emailConfirmed: boolean;
-  username: string;
-  passwordHash: string;
-}
+const schema = pgSchema('identity');
 
-export type UserSchema = Selectable<UserTable>;
+export const users = schema.table('user', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  emailAddress: varchar('email_address').notNull().unique(),
+  emailConfirmed: boolean('email_confirmed').notNull(),
+  username: varchar('username').notNull().unique(),
+  password: varchar('password_hash').notNull(),
+});
+
+export type UserSchema = InferSelectModel<typeof users>;

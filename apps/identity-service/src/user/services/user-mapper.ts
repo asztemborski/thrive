@@ -15,7 +15,7 @@ export class UserMapper implements IUserMapper {
       emailAddress: user.email.address,
       emailConfirmed: user.email.isConfirmed,
       username: user.username.value,
-      passwordHash: user.password,
+      password: user.password,
     };
   }
 
@@ -27,7 +27,7 @@ export class UserMapper implements IUserMapper {
         isConfirmed: schema.emailConfirmed,
       }),
       username: new Username({ value: schema.username }),
-      password: schema.passwordHash,
+      password: schema.password,
     });
   }
 }
