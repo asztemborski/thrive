@@ -1,1 +1,0 @@
-ALTER TABLE "organization"."role_to_permission" ADD CONSTRAINT "role_to_permission_role_id_permission_pk" PRIMARY KEY("role_id","permission");

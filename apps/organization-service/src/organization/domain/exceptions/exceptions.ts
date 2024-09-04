@@ -1,5 +1,6 @@
 import { ExceptionBase } from '@packages/nest-exceptions';
 import {
+  ORGANIZATION_AT_LEAST_ONE_MEMBER,
   ORGANIZATION_CANNOT_REMOVE_OWNER,
   ORGANIZATION_MEMBER_ALREADY_EXISTS,
   ORGANIZATION_MEMBER_IS_ALREADY_OWNER,
@@ -15,6 +16,12 @@ export class OrganizationMaxLengthException extends ExceptionBase {
       `Organization name must not exceed ${minLength} characters.`,
       ORGANIZATION_NAME_MAX_LENGTH,
     );
+  }
+}
+
+export class OrganizationAtLeastOneMemberException extends ExceptionBase {
+  constructor() {
+    super('Organization must have at least one member', ORGANIZATION_AT_LEAST_ONE_MEMBER);
   }
 }
 

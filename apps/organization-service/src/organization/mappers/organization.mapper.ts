@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 
 import { IOrganizationMapper, OrganizationToDomainSchema, IMemberMapper } from '../contracts';
-import { Organization } from '../domain/entities';
 import { OrganizationSchema } from '../database';
 import { OrganizationName } from '../domain/value-objects';
+import { Organization } from '../domain/aggregate-roots';
 
 @Injectable()
 export class OrganizationMapper implements IOrganizationMapper {
@@ -26,7 +26,7 @@ export class OrganizationMapper implements IOrganizationMapper {
     return new Organization({
       ...schema,
       name: new OrganizationName({ value: schema.name }),
-      members: members,
+      members,
       roles: [],
     });
   }

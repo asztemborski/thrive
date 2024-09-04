@@ -1,12 +1,13 @@
 import { CanActivate, ExecutionContext, Inject, Injectable } from '@nestjs/common';
-import { IMemberRepository } from '../../organization/contracts';
+
 import { UserPayload } from '@packages/nest-api';
+import { IOrganizationRepository } from '../../organization/contracts';
 
 @Injectable()
-export class OrganizationMemberGuard implements CanActivate {
+export class IsOrganizationMemberGuard implements CanActivate {
   constructor(
-    @Inject(IMemberRepository)
-    private readonly memberRepository: IMemberRepository,
+    @Inject(IOrganizationRepository)
+    private readonly organizationRepository: IOrganizationRepository,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -19,6 +20,6 @@ export class OrganizationMemberGuard implements CanActivate {
     }
 
     const user = JSON.parse(userHeader) as UserPayload;
-    return await this.memberRepository.memberExists(user.id, organizationId);
+    return await this.organizationRepository.memberExists(organizationId, user.id);
   }
 }

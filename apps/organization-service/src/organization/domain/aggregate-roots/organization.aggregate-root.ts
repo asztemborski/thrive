@@ -1,9 +1,9 @@
 import { AggregateRoot } from '@packages/nest-ddd';
 import { OrganizationName } from '../value-objects';
-import { OrganizationRole } from './organization-role.entity';
-import { OrganizationMember } from './organization-member.entity';
+import { OrganizationMember, OrganizationRole } from '../entities';
 import {
   CannotRemoveOrganizationOwnerException,
+  OrganizationAtLeastOneMemberException,
   OrganizationMemberAlreadyExistsException,
   OrganizationMemberNotFoundException,
   OrganizationRoleNotFoundException,
@@ -20,24 +20,37 @@ type OrganizationProperties = {
 type CreateOrganizationProperties = {
   name: OrganizationName;
   description: string;
+  members: { id: string; name: string }[];
 };
 
 export class Organization extends AggregateRoot<OrganizationProperties> {
-  static create(properties: CreateOrganizationProperties): Organization {
-    return new Organization({
+  static create({ members, ...properties }: CreateOrganizationProperties): Organization {
+    if (members.length <= 0) {
+      throw new OrganizationAtLeastOneMemberException();
+    }
+
+    const organization = new Organization({
       ...properties,
       roles: [],
       members: [],
       iconUrl: null,
     });
+
+    members.forEach(({ id, name }) => organization.addMember(id, name));
+    return organization;
   }
 
-  addMember(member: OrganizationMember): void {
-    if (this.hasMember(member.id)) {
+  addMember(id: string, name: string): void {
+    if (this.members.find((member) => member.id === id)) {
       throw new OrganizationMemberAlreadyExistsException();
     }
 
-    if (this.members.length === 0) {
+    const member = OrganizationMember.create({
+      id,
+      name,
+    });
+
+    if (!this.members.length) {
       member.setAsOwner();
     }
 
@@ -55,12 +68,7 @@ export class Organization extends AggregateRoot<OrganizationProperties> {
       throw new CannotRemoveOrganizationOwnerException();
     }
 
-    const index = this.findMemberIndexById(memberId);
-    if (index === -1) {
-      throw new OrganizationMemberNotFoundException();
-    }
-
-    this.properties.members.splice(index, 1);
+    this.properties.members = this.properties.members.filter((m) => m.id !== memberId);
   }
 
   assignRoleToMember(memberId: string, role: OrganizationRole): void {
@@ -93,24 +101,12 @@ export class Organization extends AggregateRoot<OrganizationProperties> {
     return this.properties.members.find((member) => member.id === memberId);
   }
 
-  private findMemberIndexById(memberId: string): number {
-    return this.properties.members.findIndex((member) => member.id === memberId);
-  }
-
-  private hasMember(memberId: string): boolean {
-    return this.findMemberById(memberId) !== undefined;
-  }
-
   private hasRole(roleId: string): boolean {
     return this.properties.roles.some((role) => role.id === roleId);
   }
 
   get description(): string {
     return this.properties.description;
-  }
-
-  set description(value: string) {
-    this.properties.description = value;
   }
 
   get name(): string {

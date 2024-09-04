@@ -7,9 +7,10 @@ import { mapperProviders } from './mappers';
 import { commandHandlers } from './commands';
 import { CommonModule } from '../common/common.module';
 import { queryHandlers } from './queries';
+import { InvitationModule } from '../invitations/invitation.module';
 
 @Module({
-  imports: [CqrsModule, forwardRef(() => CommonModule)],
+  imports: [CqrsModule, forwardRef(() => CommonModule), forwardRef(() => InvitationModule)],
   controllers: [PrivateOrganizationController],
   providers: [...repositoryProviders, ...mapperProviders, ...commandHandlers, ...queryHandlers],
   exports: [...repositoryProviders, ...mapperProviders],

@@ -7,14 +7,13 @@ import {
 } from '../exceptions';
 
 type OrganizationMemberProperties = {
-  userId: string;
   name: string;
   roles: OrganizationRole[];
   isOwner: boolean;
 };
 
 type CreateOrganizationMemberProperties = {
-  userId: string;
+  id: string;
   name: string;
 };
 
@@ -38,7 +37,7 @@ export class OrganizationMember extends EntityBase<OrganizationMemberProperties>
       throw new OrganizationRoleAlreadyAssignedException();
     }
 
-    this.roles.push(role);
+    this.properties.roles.push(role);
   }
 
   removeRole(role: OrganizationRole): void {
@@ -55,7 +54,7 @@ export class OrganizationMember extends EntityBase<OrganizationMemberProperties>
     return this.properties.name;
   }
 
-  get roles(): OrganizationRole[] {
+  get roles(): readonly OrganizationRole[] {
     return this.properties.roles;
   }
 

@@ -1,1 +1,1 @@
-export * from './organization-member.guard';
+export * from './is-organization-member.guard';

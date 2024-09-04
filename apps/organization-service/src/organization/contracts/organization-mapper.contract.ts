@@ -1,5 +1,5 @@
-import { Organization } from '../domain/entities';
 import { MemberSchema, OrganizationSchema } from '../database';
+import { Organization } from '../domain/aggregate-roots';
 
 export const IOrganizationMapper = Symbol('__ORGANIZATION_ORGANIZATION_MAPPER__');
 

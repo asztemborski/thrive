@@ -1,35 +1,55 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IInvitationService } from '../contracts/invitation-service.contract';
-import { InjectRedis } from '@packages/nest-redis';
-import Redis from 'ioredis';
 import { IOrganizationRepository } from '../../organization/contracts';
-import { OrganizationDoesNotExistException } from '../exceptions/exceptions';
-import crypto from 'node:crypto';
+import {
+  InvitationNotFoundException,
+  OrganizationDoesNotExistException,
+  OrganizationMemberDoesNotExistException,
+} from '../exceptions/exceptions';
+import { IInvitationRepository } from '../contracts/invitation-repository.contract';
+import { Invitation } from '../domain';
 
 @Injectable()
 export class InvitationService implements IInvitationService {
   constructor(
-    @InjectRedis() private readonly redis: Redis,
     @Inject(IOrganizationRepository)
     private readonly organizationRepository: IOrganizationRepository,
+    @Inject(IInvitationRepository) private readonly invitationRepository: IInvitationRepository,
   ) {}
 
-  async create(organizationId: string, expiresAt: Date | undefined): Promise<string> {
-    const organizationExists = await this.organizationRepository.exists(organizationId);
+  async getById(id: string): Promise<Invitation | never> {
+    const invitation = await this.invitationRepository.getById(id);
 
-    if (!organizationExists) {
+    if (!invitation || invitation.isExpired) {
+      throw new InvitationNotFoundException();
+    }
+
+    return invitation;
+  }
+
+  async create(organizationId: string, memberId: string, expiresAt?: Date): Promise<Invitation> {
+    const organization = await this.organizationRepository.getById(organizationId);
+
+    if (!organization) {
       throw new OrganizationDoesNotExistException();
     }
 
-    const invitationId = crypto.randomBytes(20).toString('hex');
+    const member = organization.members.find((member) => member.id === memberId);
 
-    if (expiresAt) {
-      const expiresIn = new Date().getTime() - expiresAt.getTime();
-      this.redis.set(invitationId, organizationId, 'PX', expiresIn);
-      return invitationId;
+    if (!member) {
+      throw new OrganizationMemberDoesNotExistException();
     }
 
-    await this.redis.set(invitationId, organizationId);
-    return invitationId;
+    const invitation = new Invitation({
+      organizationId: organization.id,
+      creatorId: member.id,
+    });
+
+    if (expiresAt) {
+      invitation.setExpirationDate(expiresAt);
+    }
+
+    await this.invitationRepository.save(invitation);
+    return invitation;
   }
 }

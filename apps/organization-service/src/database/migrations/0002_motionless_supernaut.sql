@@ -1,1 +1,0 @@
-ALTER TABLE "organization"."member" DROP CONSTRAINT "member_user_id_unique";

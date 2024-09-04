@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1724896245022,
-      "tag": "0000_faulty_albert_cleary",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1724929681317,
-      "tag": "0001_curved_toro",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1724932955000,
-      "tag": "0002_motionless_supernaut",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1724955921003,
-      "tag": "0003_right_famine",
+      "when": 1725473867964,
+      "tag": "0000_nifty_tarot",
       "breakpoints": true
     }
   ]

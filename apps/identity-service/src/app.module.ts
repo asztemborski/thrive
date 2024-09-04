@@ -17,7 +17,7 @@ import { schema } from './database/schema';
       inject: [AppConfig],
       useFactory: ({ database }: AppConfig) => ({
         connectionConfig: { ...database },
-        options: { schema: schema },
+        options: { schema },
       }),
     }),
     RedisModule.forRootAsync({

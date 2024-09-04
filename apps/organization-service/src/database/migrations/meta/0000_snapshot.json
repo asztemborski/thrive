@@ -1,5 +1,5 @@
 {
-  "id": "7e406bd3-6141-4c07-b1a1-e1e2a4814ae9",
+  "id": "55fea43a-6e42-4f93-8b11-f1ce57095955",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "6",
   "dialect": "postgresql",
@@ -11,13 +11,6 @@
         "id": {
           "name": "id",
           "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -27,11 +20,18 @@
           "primaryKey": false,
           "notNull": true
         },
+        "is_owner": {
+          "name": "is_owner",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
         "organization_id": {
           "name": "organization_id",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         }
       },
       "indexes": {},
@@ -51,16 +51,16 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "member_user_id_unique": {
-          "name": "member_user_id_unique",
-          "nullsNotDistinct": false,
+      "compositePrimaryKeys": {
+        "member_id_organization_id_pk": {
+          "name": "member_id_organization_id_pk",
           "columns": [
-            "user_id"
+            "id",
+            "organization_id"
           ]
         }
-      }
+      },
+      "uniqueConstraints": {}
     },
     "organization.role_to_permission": {
       "name": "role_to_permission",
@@ -110,7 +110,15 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "role_to_permission_role_id_permission_pk": {
+          "name": "role_to_permission_role_id_permission_pk",
+          "columns": [
+            "role_id",
+            "permission"
+          ]
+        }
+      },
       "uniqueConstraints": {}
     },
     "organization.role": {
@@ -185,12 +193,6 @@
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
-        },
-        "owner_id": {
-          "name": "owner_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
         }
       },
       "indexes": {},
@@ -211,6 +213,61 @@
       },
       "indexes": {},
       "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "organization.invitation": {
+      "name": "invitation",
+      "schema": "organization",
+      "columns": {
+        "code": {
+          "name": "code",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "organization_id": {
+          "name": "organization_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "creator_id": {
+          "name": "creator_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "invitation_organization_id_organization_id_fk": {
+          "name": "invitation_organization_id_organization_id_fk",
+          "tableFrom": "invitation",
+          "tableTo": "organization",
+          "schemaTo": "organization",
+          "columnsFrom": [
+            "organization_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     }
