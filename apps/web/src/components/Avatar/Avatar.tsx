@@ -4,7 +4,7 @@ import * as AvatarPrimitive from '@radix-ui/react-avatar';
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from 'react';
 import { cn } from '@/utilities/classnames';
 
-type AvatarProps = ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>;
+export type AvatarProps = ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>;
 
 type AvatarRef = ElementRef<typeof AvatarPrimitive.Root>;
 

@@ -22,13 +22,12 @@ import {
 import ErrorAlertDialog from '@/components/ErrorAlertDialog/ErrorAlertDialog';
 import identityApiClient from '@/api/identity/identityApiClient';
 import { DEFAULT_AUTHENTICATED_ROUTE } from '@/constants/routes';
+import { retrieveErrorTranslation, retrieveFieldTranslation } from '@/utilities/form';
 
 export type SignInFormValues = {
   email: string;
   password: string;
 };
-
-type SignInFormKeys = keyof SignInFormValues;
 
 const DEFAULT_FORM_VALUES: SignInFormValues = {
   email: '',
@@ -56,17 +55,7 @@ const SignInForm = () => {
   const [error, setError] = useState<ErrorResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const retrieveFieldTranslation = (fieldName: SignInFormKeys, property: string) => {
-    return formTranslations(`${fieldName}.${property}`);
-  };
-
   const onAlertDialogContinue = () => setDisplayAlertDialog('');
-
-  const retrieveInputError = (fieldName: SignInFormKeys, props?: { [key: string]: any }) => {
-    if (!errors[fieldName]) return undefined;
-
-    return inputErrorsTranslations(errors[fieldName]?.message, props);
-  };
 
   const onSubmit = async (data: SignInFormValues) => {
     try {
@@ -100,11 +89,19 @@ const SignInForm = () => {
         <FormField
           component={Input}
           fieldName="email"
-          label={retrieveFieldTranslation('email', 'label')}
-          placeholder={retrieveFieldTranslation('email', 'placeholder')}
+          label={retrieveFieldTranslation<SignInFormValues>(formTranslations, 'email', 'label')}
+          placeholder={retrieveFieldTranslation<SignInFormValues>(
+            formTranslations,
+            'email',
+            'placeholder',
+          )}
           rules={SIGNIN_FORM_RULES.email}
           control={control}
-          error={retrieveInputError('email')}
+          error={retrieveErrorTranslation<SignInFormValues>(
+            inputErrorsTranslations,
+            errors,
+            'email',
+          )}
           icon={<IconMailFilled size="20px" />}
           className="bg-card"
         />
@@ -112,12 +109,20 @@ const SignInForm = () => {
           component={Input}
           type="password"
           fieldName="password"
-          label={retrieveFieldTranslation('password', 'label')}
-          placeholder={retrieveFieldTranslation('password', 'placeholder')}
+          label={retrieveFieldTranslation<SignInFormValues>(formTranslations, 'password', 'label')}
+          placeholder={retrieveFieldTranslation<SignInFormValues>(
+            formTranslations,
+            'password',
+            'placeholder',
+          )}
           rules={SIGNIN_FORM_RULES.password}
           control={control}
           icon={<IconKeyFilled size="20px" />}
-          error={retrieveInputError('password')}
+          error={retrieveErrorTranslation<SignInFormValues>(
+            inputErrorsTranslations,
+            errors,
+            'password',
+          )}
           autoComplete="on"
           className="bg-card"
         />

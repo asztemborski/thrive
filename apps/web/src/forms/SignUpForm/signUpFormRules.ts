@@ -1,14 +1,8 @@
-import { RegisterOptions } from "react-hook-form";
+import { MAIL_REGEX } from '@/constants/regex';
+import { ERROR_MESSAGES } from '@/containers/ErrorMessagesProvider/ErrorMessagesProvider';
 
-import { MAIL_REGEX } from "@/constants/regex";
-import { ERROR_MESSAGES } from "@/containers/ErrorMessagesProvider/ErrorMessagesProvider";
-
-import { SignUpFormValues } from "./SignUpForm";
-
-export type FormRules<T extends { [key: string]: any }> = Record<
-  keyof T,
-  RegisterOptions<any, string>
->;
+import { SignUpFormValues } from './SignUpForm';
+import { FormRules } from '@/utilities/form';
 
 export const PASSWORD_MIN_LENGTH = 6;
 

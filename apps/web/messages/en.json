@@ -106,5 +106,24 @@
     "signIn": "Sign in with email",
     "continueWith": "Or continue with",
     "signUp": "Sign up"
+  },
+  "CreateOrganizationForm": {
+    "name": {
+      "label": "Name",
+      "placeholder": "Name"
+    },
+    "description": {
+      "label": "Description",
+      "placeholder": "Description"
+    },
+    "create": "Create"
+  },
+  "OrganizationSelectMenu": {
+    "join": "Join organization",
+    "create": "Create organization"
+  },
+  "CreateOrganizationDialog": {
+    "title": "Create organization",
+    "description": "Fill the data below to create your organization"
   }
 }

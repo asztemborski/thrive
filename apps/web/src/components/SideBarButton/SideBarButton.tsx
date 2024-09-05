@@ -3,20 +3,12 @@ import { MouseEventHandler, ReactNode } from 'react';
 import Button from '@/components/Button';
 
 type SideBarButtonProps = {
-  name: string;
-  expanded: boolean;
   isActive: boolean;
   icon: ReactNode;
   onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
 };
 
-export default function SideBarButton({
-  isActive,
-  icon,
-  onClick,
-  name,
-  expanded,
-}: SideBarButtonProps) {
+export default function SideBarButton({ isActive, icon, onClick }: SideBarButtonProps) {
   return (
     <Button
       variant="ghost"
@@ -28,7 +20,6 @@ export default function SideBarButton({
       onClick={onClick}
     >
       {icon}
-      {expanded && <span>{name}</span>}
     </Button>
   );
 }

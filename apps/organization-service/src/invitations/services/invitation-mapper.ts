@@ -1,7 +1,7 @@
 import { IInvitationMapper } from '../contracts/invitation-mapper.contract';
 import { Injectable } from '@nestjs/common';
 import { Invitation } from '../domain';
-import { InvitationSchema } from '../database/schemas/invitation.schema';
+import { InvitationSchema } from '../database/schemas';
 
 @Injectable()
 export class InvitationMapper implements IInvitationMapper {

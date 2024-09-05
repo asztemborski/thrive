@@ -27,6 +27,7 @@ import {
 } from '@tabler/icons-react';
 
 import SIGNUP_FORM_RULES, { PASSWORD_MIN_LENGTH } from './signUpFormRules';
+import { retrieveErrorTranslation, retrieveFieldTranslation } from '@/utilities/form';
 
 export type SignUpFormValues = {
   email: string;
@@ -34,8 +35,6 @@ export type SignUpFormValues = {
   password: string;
   confirmPassword: string;
 };
-
-type SignUpFormKeys = keyof SignUpFormValues;
 
 const DEFAULT_FORM_VALUES: SignUpFormValues = {
   email: '',
@@ -93,16 +92,6 @@ const SignUpForm = () => {
 
   const onAlertDialogContinue = () => setDisplayAlertDialog('');
 
-  const retrieveFieldTranslation = (fieldName: SignUpFormKeys, property: string) => {
-    return formTranslations(`${fieldName}.${property}`);
-  };
-
-  const retrieveInputError = (fieldName: SignUpFormKeys, props?: { [key: string]: any }) => {
-    if (!errors[fieldName]) return undefined;
-
-    return inputErrorsTranslations(errors[fieldName]?.message, props);
-  };
-
   return (
     <Fragment>
       <ConfirmEmailAlertDialog
@@ -119,11 +108,19 @@ const SignUpForm = () => {
           <FormField
             component={Input}
             fieldName="email"
-            label={retrieveFieldTranslation('email', 'label')}
-            placeholder={retrieveFieldTranslation('email', 'placeholder')}
+            label={retrieveFieldTranslation<SignUpFormValues>(formTranslations, 'email', 'label')}
+            placeholder={retrieveFieldTranslation<SignUpFormValues>(
+              formTranslations,
+              'email',
+              'placeholder',
+            )}
             rules={SIGNUP_FORM_RULES.email}
             control={control}
-            error={retrieveInputError('email')}
+            error={retrieveErrorTranslation<SignUpFormValues>(
+              inputErrorsTranslations,
+              errors,
+              'email',
+            )}
             icon={<IconMailFilled size="20px" />}
             disabled={isLoading}
             className="bg-card"
@@ -131,10 +128,22 @@ const SignUpForm = () => {
           <FormField
             component={Input}
             fieldName="username"
-            label={retrieveFieldTranslation('username', 'label')}
-            placeholder={retrieveFieldTranslation('username', 'placeholder')}
+            label={retrieveFieldTranslation<SignUpFormValues>(
+              formTranslations,
+              'username',
+              'label',
+            )}
+            placeholder={retrieveFieldTranslation<SignUpFormValues>(
+              formTranslations,
+              'username',
+              'placeholder',
+            )}
             rules={SIGNUP_FORM_RULES.username}
-            error={retrieveInputError('username')}
+            error={retrieveErrorTranslation<SignUpFormValues>(
+              inputErrorsTranslations,
+              errors,
+              'username',
+            )}
             control={control}
             icon={<IconAppWindowFilled size="20px" />}
             disabled={isLoading}
@@ -144,13 +153,24 @@ const SignUpForm = () => {
             component={Input}
             type="password"
             fieldName="password"
-            label={retrieveFieldTranslation('password', 'label')}
-            placeholder={retrieveFieldTranslation('password', 'placeholder')}
+            label={retrieveFieldTranslation<SignUpFormValues>(
+              formTranslations,
+              'password',
+              'label',
+            )}
+            placeholder={retrieveFieldTranslation<SignUpFormValues>(
+              formTranslations,
+              'password',
+              'placeholder',
+            )}
             rules={SIGNUP_FORM_RULES.password}
             control={control}
-            error={retrieveInputError('password', {
-              number: PASSWORD_MIN_LENGTH,
-            })}
+            error={retrieveErrorTranslation<SignUpFormValues>(
+              inputErrorsTranslations,
+              errors,
+              'password',
+              { number: PASSWORD_MIN_LENGTH },
+            )}
             icon={<IconKeyFilled size="20px" />}
             disabled={isLoading}
             autoComplete="on"
@@ -160,13 +180,24 @@ const SignUpForm = () => {
             component={Input}
             fieldName="confirmPassword"
             type="password"
-            label={retrieveFieldTranslation('confirmPassword', 'label')}
-            placeholder={retrieveFieldTranslation('confirmPassword', 'placeholder')}
+            label={retrieveFieldTranslation<SignUpFormValues>(
+              formTranslations,
+              'confirmPassword',
+              'label',
+            )}
+            placeholder={retrieveFieldTranslation<SignUpFormValues>(
+              formTranslations,
+              'confirmPassword',
+              'placeholder',
+            )}
             rules={SIGNUP_FORM_RULES.confirmPassword}
             control={control}
-            error={retrieveInputError('confirmPassword', {
-              number: PASSWORD_MIN_LENGTH,
-            })}
+            error={retrieveErrorTranslation<SignUpFormValues>(
+              inputErrorsTranslations,
+              errors,
+              'confirmPassword',
+              { number: PASSWORD_MIN_LENGTH },
+            )}
             icon={<IconLockFilled size="20px" />}
             disabled={isLoading}
             autoComplete="on"

@@ -12,3 +12,6 @@ export const API_ERROR_MESSAGES = 'ApiErrorMessages';
 export const EMAIL_CONFIRM_PAGE_MESSAGES = 'ConfirmEmailPage';
 export const SIGNIN_PAGE_MESSAGES = 'SignInPage';
 export const SIGNIN_FORM_MESSAGES = 'SignInForm';
+export const CREATE_ORGANIZATION_FORM_MESSAGES = 'CreateOrganizationForm';
+export const ORGANIZATION_SELECT_MENU_MESSAGES = 'OrganizationSelectMenu';
+export const CREATE_ORGANIZATION_DIALOG_MESSAGES = 'CreateOrganizationDialog';

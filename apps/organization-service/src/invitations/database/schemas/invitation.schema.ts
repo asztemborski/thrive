@@ -1,5 +1,5 @@
 import { date, pgSchema, uuid, varchar } from 'drizzle-orm/pg-core';
-import { members, organizations } from '../../../organization/database';
+import { organizations } from '../../../organization/database';
 import { InferSelectModel, relations } from 'drizzle-orm';
 
 const schema = pgSchema('organization');

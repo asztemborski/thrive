@@ -1,3 +1,4 @@
-import { GetOrganizationQueryHandler } from './get-organization/get-organization.query-handler';
+import { GetOrganizationQueryHandler } from './get-organization';
+import { GetOrganizationsQueryHandler } from './get-organizations';
 
-export const queryHandlers = [GetOrganizationQueryHandler];
+export const queryHandlers = [GetOrganizationQueryHandler, GetOrganizationsQueryHandler];

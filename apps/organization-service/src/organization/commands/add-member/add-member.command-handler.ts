@@ -2,9 +2,8 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { AddMemberCommand } from './add-member.command';
 import { Inject } from '@nestjs/common';
 import { IOrganizationRepository } from '../../contracts';
-
 import { IInvitationService } from '../../../invitations/contracts/invitation-service.contract';
-import { OrganizationNotFoundException } from '../../exceptions/exceptions';
+import { OrganizationNotFoundException } from '../../exceptions';
 
 @CommandHandler(AddMemberCommand)
 export class AddMemberCommandHandler implements ICommandHandler<AddMemberCommand> {

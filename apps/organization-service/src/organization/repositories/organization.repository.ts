@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 
 import { IMemberMapper, IOrganizationMapper, IOrganizationRepository } from '../contracts';
-
 import { Database } from '../../database/schema';
 import { InjectDrizzle } from '@packages/nest-drizzle';
 import { members, organizations } from '../database';
@@ -25,6 +24,20 @@ export class OrganizationRepository implements IOrganizationRepository {
     });
 
     return organization && this.organizationMapper.toDomain(organization);
+  }
+
+  async getMemberOrganizations(memberId: string): Promise<Organization[]> {
+    const organizations = await this.db.query.organizations.findMany({
+      with: {
+        members: {
+          where: eq(members.id, memberId),
+        },
+      },
+    });
+
+    return organizations.map((organization) =>
+      this.organizationMapper.toDomain({ ...organization, members: [] }),
+    );
   }
 
   async exists(organizationId: string): Promise<boolean> {

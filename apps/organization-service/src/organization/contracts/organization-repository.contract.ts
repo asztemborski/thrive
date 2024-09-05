@@ -4,6 +4,7 @@ export const IOrganizationRepository = Symbol('__ORGANIZATION_ORGANIZATION_REPOS
 
 export interface IOrganizationRepository {
   getById(organizationId: string): Promise<Organization | undefined>;
+  getMemberOrganizations(memberId: string): Promise<Organization[]>;
   create(organization: Organization): Promise<void>;
   exists(organizationId: string): Promise<boolean>;
   saveMember(organization: Organization, memberId: string): Promise<void>;

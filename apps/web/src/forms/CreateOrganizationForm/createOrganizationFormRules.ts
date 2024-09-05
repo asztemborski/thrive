@@ -1,21 +1,15 @@
-import { MAIL_REGEX } from '@/constants/regex';
+import { CreateOrganizationFormValues } from '@/forms/CreateOrganizationForm/CreateOrganizationForm';
 import { ERROR_MESSAGES } from '@/containers/ErrorMessagesProvider/ErrorMessagesProvider';
-
-import { SignInFormValues } from './SignInForm';
 import { FormRules } from '@/utilities/form';
 
-const SIGNIN_FORM_RULES: FormRules<SignInFormValues> = {
-  email: {
+const CREATE_ORGANIZATION_FORM_RULES: FormRules<CreateOrganizationFormValues> = {
+  name: {
     required: {
       value: true,
       message: ERROR_MESSAGES.required,
     },
-    pattern: {
-      value: MAIL_REGEX,
-      message: ERROR_MESSAGES.invalidEmail,
-    },
   },
-  password: {
+  description: {
     required: {
       value: true,
       message: ERROR_MESSAGES.required,
@@ -23,4 +17,4 @@ const SIGNIN_FORM_RULES: FormRules<SignInFormValues> = {
   },
 };
 
-export default SIGNIN_FORM_RULES;
+export default CREATE_ORGANIZATION_FORM_RULES;

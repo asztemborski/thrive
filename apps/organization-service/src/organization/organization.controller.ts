@@ -7,6 +7,7 @@ import { CreateOrganizationCommand } from './commands';
 import { GetOrganizationQuery } from './queries/get-organization';
 import { IsOrganizationMemberGuard } from '../common/guards';
 import { AddMemberCommand } from './commands/add-member/add-member.command';
+import { GetOrganizationsQuery } from './queries/get-organizations';
 
 @PrivateController({ version: '1', path: 'organization' })
 export class PrivateOrganizationController {
@@ -14,6 +15,12 @@ export class PrivateOrganizationController {
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
   ) {}
+
+  @Get()
+  async getOrganizations(@User() user: UserPayload): Promise<GetOrganizationResponseDto[]> {
+    const query = new GetOrganizationsQuery(user.id);
+    return this.queryBus.execute(query);
+  }
 
   @Post()
   async createOrganization(

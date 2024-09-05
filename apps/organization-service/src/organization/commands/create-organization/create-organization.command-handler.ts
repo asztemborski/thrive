@@ -25,7 +25,6 @@ export class CreateOrganizationCommandHandler
     });
 
     await this.organizationRepository.create(organization);
-
     return organization.id;
   }
 }
