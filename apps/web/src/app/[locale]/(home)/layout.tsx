@@ -2,10 +2,10 @@ import { ReactNode, Suspense } from 'react';
 import SideBar from '@/components/SideBar/SideBar';
 import HomeLayoutLoading from '@/app/[locale]/(home)/loading';
 import {
-  CREATE_ORGANIZATION_DIALOG_MESSAGES,
-  CREATE_ORGANIZATION_FORM_MESSAGES,
+  CREATE_WORKSPACE_DIALOG_MESSAGES,
+  CREATE_WORKSPACE_FORM_MESSAGES,
   INPUT_ERROR_MESSAGES,
-  ORGANIZATION_SELECT_MENU_MESSAGES,
+  WORKSPACE_SELECT_MENU_MESSAGES,
 } from '@/constants/translations';
 import MessagesProvider from '@/containers/MessagesProvider';
 
@@ -20,9 +20,9 @@ export default function HomeLayout({ children }: HomeLayoutProps) {
         <MessagesProvider
           namespaces={[
             INPUT_ERROR_MESSAGES,
-            CREATE_ORGANIZATION_FORM_MESSAGES,
-            ORGANIZATION_SELECT_MENU_MESSAGES,
-            CREATE_ORGANIZATION_DIALOG_MESSAGES,
+            CREATE_WORKSPACE_FORM_MESSAGES,
+            WORKSPACE_SELECT_MENU_MESSAGES,
+            CREATE_WORKSPACE_DIALOG_MESSAGES,
           ]}
         >
           <SideBar />

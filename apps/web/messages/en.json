@@ -107,7 +107,7 @@
     "continueWith": "Or continue with",
     "signUp": "Sign up"
   },
-  "CreateOrganizationForm": {
+  "CreateWorkspaceForm": {
     "name": {
       "label": "Name",
       "placeholder": "Name"
@@ -118,12 +118,12 @@
     },
     "create": "Create"
   },
-  "OrganizationSelectMenu": {
-    "join": "Join organization",
-    "create": "Create organization"
+  "WorkspaceSelectMenu": {
+    "join": "Join workspace",
+    "create": "Create workspace"
   },
-  "CreateOrganizationDialog": {
-    "title": "Create organization",
-    "description": "Fill the data below to create your organization"
+  "CreateWorkspaceDialog": {
+    "title": "Create workspace",
+    "description": "Fill the data below to create your workspace"
   }
 }

@@ -1,0 +1,44 @@
+http:
+  routers:
+    collaboration-private:
+      rule: "PathPrefix(`/collaboration/v1/private`)"
+      service: collaboration
+      entryPoints:
+        - web
+      middlewares:
+        - stripprefix-collaboration
+        - cors-headers
+        - jwt-auth
+
+    collaboration-public:
+      rule: "PathPrefix(`/collaboration/v1/public`) || PathPrefix(`/collaboration/docs`)"
+      service: collaboration
+      entryPoints:
+        - web
+      middlewares:
+        - stripprefix-collaboration
+        - cors-headers
+
+  services:
+    collaboration:
+      loadBalancer:
+        servers:
+          - url: "http://collaboration-service:3102"
+
+  middlewares:
+    stripprefix-collaboration:
+      stripPrefix:
+        prefixes:
+          - "/collaboration"
+    jwt-auth:
+      forwardAuth:
+        address: "http://identity-service:3101/v1/public/auth/validate"
+        authResponseHeaders:
+          - "x-user"
+    cors-headers:
+      headers:
+        accessControlAllowOriginList:
+          - "http://localhost:3000"
+        accessControlAllowMethods: "GET, PUT, POST, DELETE, OPTIONS"
+        accessControlAllowHeaders: "*"
+        accessControlMaxAge: "86400"

@@ -16,12 +16,13 @@ import identityApiClient from '@/api/identity/identityApiClient';
 import { SessionProvider, signOut, useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 import SideBarButton from '@/components/SideBarButton/SideBarButton';
-import organizationApiClient from '@/api/organization/organizationApiClient';
-import OrganizationSelectMenu from '@/components/OrganizationSelectMenu/OrganizationSelectMenu';
-import CreateOrganizationDialog from '@/components/CreateOrganizationDialog/CreateOrganizationDialog';
-import { DEFAULT_AUTHENTICATED_ROUTE } from '@/constants/routes';
+import collaborationApiClient from '@/api/collaboration/collaborationApiClient';
 
-export type Organization = {
+import { DEFAULT_AUTHENTICATED_ROUTE } from '@/constants/routes';
+import CreateWorkspaceDialog from '@/components/CreateWorkspaceDialog/CreateWorkspaceDialog';
+import WorkspaceSelectMenu from '@/components/WorkspaceSelectMenu/WorkspaceSelectMenu';
+
+export type Workspace = {
   id: string;
   name: string;
   description: string;
@@ -32,70 +33,69 @@ const SideNavigationBar = () => {
   const pathname = usePathname();
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(true);
-  const [organizations, setOrganizations] = useState<Organization[]>([]);
-  const [currentOrganizationId, setCurrentOrganizationId] = useState<string | undefined>();
+  const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
+  const [currentWorkspaceId, setCurrentWorkspaceId] = useState<string | undefined>();
 
-  const [showCreateOrganizationDialog, setShowCreateOrganizationDialog] = useState(false);
+  const [showCreateWorkspaceDialog, setShowCreateWorkspaceDialog] = useState(false);
   const router = useRouter();
 
-  const onCreateOrganizationClick = () => {
-    setShowCreateOrganizationDialog(true);
+  const onCreateWorkspaceClick = () => {
+    setShowCreateWorkspaceDialog(true);
   };
 
-  const onShowCreateOrganizationDialogChange = (show: boolean) => {
-    setShowCreateOrganizationDialog(show);
+  const onShowCreateWorkspaceDialogChange = (show: boolean) => {
+    setShowCreateWorkspaceDialog(show);
   };
 
   const onLogoutClick = async () => {
     await identityApiClient.logoutRequest();
   };
 
-  const onOrganizationCreated = async (createdOrganization: Organization) => {
-    setOrganizations((prevState) => [...prevState, createdOrganization]);
-    router.push(`/dashboard/${createdOrganization.id}`);
+  const onWorkspaceCreated = async (createdWorkspace: Workspace) => {
+    setWorkspaces((prevState) => [...prevState, createdWorkspace]);
+    router.push(`/dashboard/${createdWorkspace.id}`);
   };
 
-  const onOrganizationSelect = (organization: Organization) => {
-    router.push(`/dashboard/${organization.id}`);
+  const onWorkspaceSelect = (workspace: Workspace) => {
+    router.push(`/dashboard/${workspace.id}`);
   };
 
   useEffect(() => {
-    const fetchUserOrganizations = async (): Promise<void> => {
-      const response = await organizationApiClient.getOrganizationsRequest();
-      setOrganizations(response);
+    const fetchUserWorkspaces = async (): Promise<void> => {
+      const response = await collaborationApiClient.getWorkspacesRequest();
+      setWorkspaces(response);
       setIsLoading(false);
     };
 
-    void fetchUserOrganizations();
+    void fetchUserWorkspaces();
   }, []);
 
   useEffect(() => {
     if (!pathname.includes(`${DEFAULT_AUTHENTICATED_ROUTE}/`)) return;
 
     const id = pathname.split('/')[2];
-    setCurrentOrganizationId(id);
+    setCurrentWorkspaceId(id);
   }, [pathname]);
 
-  const currentOrganization = organizations.find(
-    (organization) => organization.id === currentOrganizationId,
-  );
+  const currentWorkspace = workspaces.find((workspace) => workspace.id === currentWorkspaceId);
 
   return (
     <nav className="h-full bg-black flex flex-col items-center pt-5 justify-between border-r border-bg-border ">
-      <CreateOrganizationDialog
-        isOpen={showCreateOrganizationDialog}
-        onOpenChange={onShowCreateOrganizationDialogChange}
-        onCreated={onOrganizationCreated}
+      <CreateWorkspaceDialog
+        isOpen={showCreateWorkspaceDialog}
+        onOpenChange={onShowCreateWorkspaceDialogChange}
+        onCreated={onWorkspaceCreated}
       />
       <div className="flex flex-col items-center ">
-        <OrganizationSelectMenu
-          organizations={organizations}
-          currentOrganization={currentOrganization}
-          onCreateClick={onCreateOrganizationClick}
-          onSelect={onOrganizationSelect}
+        <WorkspaceSelectMenu
+          workspaces={workspaces}
+          currentWorkspace={currentWorkspace}
+          onCreateClick={onCreateWorkspaceClick}
+          onSelect={onWorkspaceSelect}
+          isLoading={isLoading}
         />
         <Link
-          href={currentOrganization ? `/dashboard/${currentOrganization.id}` : '/dashboard'}
+          href={currentWorkspace ? `/dashboard/${currentWorkspace.id}` : '/dashboard'}
           className="w-full mt-5"
         >
           <SideBarButton

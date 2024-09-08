@@ -1,4 +1,4 @@
-import organizationApiClient from '@/api/organization/organizationApiClient';
+import collaborationApiClient from '@/api/collaboration/collaborationApiClient';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,7 +21,7 @@ type OrganizationDashboardPageProps = {
 export default async function OrganizationDashboardPage({
   params,
 }: OrganizationDashboardPageProps) {
-  const organization = await organizationApiClient.getOrganizationRequest(params.organizationId);
+  const organization = await collaborationApiClient.getWorkspaceRequest(params.organizationId);
 
   return (
     <div className="flex  h-full ">

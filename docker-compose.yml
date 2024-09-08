@@ -93,11 +93,11 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
-  organization-service:
-    container_name: organization-service
+  collaboration-service:
+    container_name: collaboration-service
     build:
       context: .
-      dockerfile: apps/organization-service/Dockerfile
+      dockerfile: apps/collaboration-service/Dockerfile
     volumes:
       - .:/usr/src/app
     env_file:

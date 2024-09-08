@@ -26,8 +26,10 @@ client.interceptors.request.use(async (config) => {
   }
 
   if (!session?.accessToken) {
-    const session = await getServerSession(authConfig);
-    config.headers.Authorization = `Bearer ${session?.accessToken}`;
+    try {
+      const session = await getServerSession(authConfig);
+      config.headers.Authorization = `Bearer ${session?.accessToken}`;
+    } catch (err) {}
   }
 
   return config;
