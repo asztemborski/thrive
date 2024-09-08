@@ -1,5 +1,5 @@
 import { Invitation } from '../domain';
-import { InvitationSchema } from '../database/schemas/invitation.schema';
+import { InvitationSchema } from '../database/schemas';
 
 export const IInvitationMapper = Symbol('__ORGANIZATION_INVITATION_MAPPER__');
 

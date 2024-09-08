@@ -45,6 +45,7 @@ const jwtCallback = async ({ token, user }: JwtCallbackParams): Promise<JWT> => 
   if (Date.now() < token.expiresAt) {
     return token;
   }
+
   try {
     const response = await identityApiClient.refreshTokenRequest(token.refreshToken);
     const { id, email, username } = decodeAccessToken(response.accessToken);
@@ -60,6 +61,7 @@ const jwtCallback = async ({ token, user }: JwtCallbackParams): Promise<JWT> => 
 
     return token;
   } catch (err) {
+    console.log(err);
     return { ...token, error: 'RefreshTokenError' };
   }
 };

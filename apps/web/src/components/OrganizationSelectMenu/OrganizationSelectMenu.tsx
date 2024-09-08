@@ -14,18 +14,21 @@ type Organization = {
   id: string;
   name: string;
   iconUrl: string | null;
+  description: string;
 };
 
 type OrganizationSelectMenuProps = {
   organizations: Organization[];
   currentOrganization: Organization | undefined;
   onCreateClick: () => void;
+  onSelect: (selectedOrganization: Organization) => void;
 };
 
 const OrganizationSelectMenu = ({
   organizations,
   currentOrganization,
   onCreateClick,
+  onSelect,
 }: OrganizationSelectMenuProps) => {
   const t = useTranslations(ORGANIZATION_SELECT_MENU_MESSAGES);
 
@@ -48,13 +51,21 @@ const OrganizationSelectMenu = ({
       </PopoverTrigger>
       <PopoverContent side="right" sideOffset={17} collisionPadding={5}>
         <nav className="flex flex-col gap-1">
-          <ScrollArea className="flex h-auto max-h-[250px] flex-col overflow-y-auto ">
-            {organizations.map(({ id, name, iconUrl }) => (
-              <div key={id} className="flex flex-col ">
-                <Button variant="ghost" className="justify-normal px-1 mb-1 mr-3">
+          <ScrollArea className="flex h-auto max-h-[265px] flex-col overflow-y-auto ">
+            {organizations.map((organization) => (
+              <div key={organization.id} className="flex flex-col ">
+                <Button
+                  onClick={() => onSelect(organization)}
+                  variant="ghost"
+                  className="justify-normal px-1 mb-1 mr-3"
+                >
                   <div className="flex flex-row items-center gap-2">
-                    <OrganizationAvatar className="h-9 w-9" name={name} iconUrl={iconUrl} />
-                    <span className="text-sm">{name}</span>
+                    <OrganizationAvatar
+                      className="h-9 w-9"
+                      name={organization.name}
+                      iconUrl={organization.iconUrl}
+                    />
+                    <span className="text-sm">{organization.name}</span>
                   </div>
                 </Button>
               </div>

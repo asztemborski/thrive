@@ -4,7 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { TypedConfigModule } from 'nest-typed-config';
 
 import { configOptions } from './config/auth.config';
-import { PublicAuthController } from './auth.controller';
+import { PrivateAuthController, PublicAuthController } from './auth.controller';
 import { serviceProviders } from './services';
 import { commandHandlers } from './commands';
 import { UserModule } from '../user/user.module';
@@ -16,7 +16,7 @@ import { UserModule } from '../user/user.module';
     JwtModule,
     forwardRef(() => UserModule),
   ],
-  controllers: [PublicAuthController],
+  controllers: [PublicAuthController, PrivateAuthController],
   providers: [...serviceProviders, ...commandHandlers],
   exports: [...serviceProviders],
 })

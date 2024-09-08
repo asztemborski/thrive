@@ -2,6 +2,8 @@ import axios from 'axios';
 
 import { API_URL } from '@/constants/common';
 import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth';
+import authConfig from '@/libs/auth';
 
 const client = axios.create({
   baseURL: API_URL,
@@ -21,6 +23,11 @@ client.interceptors.request.use(async (config) => {
 
   if (session?.accessToken) {
     config.headers.Authorization = `Bearer ${session.accessToken}`;
+  }
+
+  if (!session?.accessToken) {
+    const session = await getServerSession(authConfig);
+    config.headers.Authorization = `Bearer ${session?.accessToken}`;
   }
 
   return config;

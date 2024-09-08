@@ -2,7 +2,7 @@ import { IInvitationRepository } from '../contracts/invitation-repository.contra
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectDrizzle } from '@packages/nest-drizzle';
 import { Database } from '../../database/schema';
-import { invitations } from './schemas/invitation.schema';
+import { invitations } from './schemas';
 import { eq } from 'drizzle-orm';
 import { IInvitationMapper } from '../contracts/invitation-mapper.contract';
 import { Invitation } from '../domain';

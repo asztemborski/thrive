@@ -8,7 +8,7 @@ import {
   IconLogout,
   IconLayout,
 } from '@tabler/icons-react';
-import { Link } from '@/libs/navigation';
+import { Link, useRouter } from '@/libs/navigation';
 
 import { usePathname } from '@/libs/navigation';
 
@@ -19,6 +19,7 @@ import SideBarButton from '@/components/SideBarButton/SideBarButton';
 import organizationApiClient from '@/api/organization/organizationApiClient';
 import OrganizationSelectMenu from '@/components/OrganizationSelectMenu/OrganizationSelectMenu';
 import CreateOrganizationDialog from '@/components/CreateOrganizationDialog/CreateOrganizationDialog';
+import { DEFAULT_AUTHENTICATED_ROUTE } from '@/constants/routes';
 
 export type Organization = {
   id: string;
@@ -32,10 +33,10 @@ const SideNavigationBar = () => {
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(true);
   const [organizations, setOrganizations] = useState<Organization[]>([]);
-  const [currentOrganization, setCurrentOrganization] = useState<Organization | undefined>(
-    undefined,
-  );
+  const [currentOrganizationId, setCurrentOrganizationId] = useState<string | undefined>();
+
   const [showCreateOrganizationDialog, setShowCreateOrganizationDialog] = useState(false);
+  const router = useRouter();
 
   const onCreateOrganizationClick = () => {
     setShowCreateOrganizationDialog(true);
@@ -51,7 +52,11 @@ const SideNavigationBar = () => {
 
   const onOrganizationCreated = async (createdOrganization: Organization) => {
     setOrganizations((prevState) => [...prevState, createdOrganization]);
-    setCurrentOrganization(createdOrganization);
+    router.push(`/dashboard/${createdOrganization.id}`);
+  };
+
+  const onOrganizationSelect = (organization: Organization) => {
+    router.push(`/dashboard/${organization.id}`);
   };
 
   useEffect(() => {
@@ -65,11 +70,18 @@ const SideNavigationBar = () => {
   }, []);
 
   useEffect(() => {
-    if (session?.error) void signOut();
-  }, [session, pathname]);
+    if (!pathname.includes(`${DEFAULT_AUTHENTICATED_ROUTE}/`)) return;
+
+    const id = pathname.split('/')[2];
+    setCurrentOrganizationId(id);
+  }, [pathname]);
+
+  const currentOrganization = organizations.find(
+    (organization) => organization.id === currentOrganizationId,
+  );
 
   return (
-    <nav className="h-full bg-black flex flex-col items-center pt-5 justify-between">
+    <nav className="h-full bg-black flex flex-col items-center pt-5 justify-between border-r border-bg-border ">
       <CreateOrganizationDialog
         isOpen={showCreateOrganizationDialog}
         onOpenChange={onShowCreateOrganizationDialogChange}
@@ -80,10 +92,14 @@ const SideNavigationBar = () => {
           organizations={organizations}
           currentOrganization={currentOrganization}
           onCreateClick={onCreateOrganizationClick}
+          onSelect={onOrganizationSelect}
         />
-        <Link href="/dashboard" className="w-full mt-5">
+        <Link
+          href={currentOrganization ? `/dashboard/${currentOrganization.id}` : '/dashboard'}
+          className="w-full mt-5"
+        >
           <SideBarButton
-            isActive={pathname === '/dashboard'}
+            isActive={pathname.includes('/dashboard')}
             icon={<IconLayout strokeWidth={1.5} />}
           />
         </Link>
