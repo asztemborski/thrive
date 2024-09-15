@@ -1,23 +1,26 @@
 import { Module } from '@nestjs/common';
 import { TypedConfigModule } from 'nest-typed-config';
 
-import { configOptions, DatabaseConfig } from './config';
-import { DrizzleModule } from '@packages/nest-drizzle';
-import { schema } from './database/schema';
-
+import { configOptions, DatabaseConfig } from './common/config';
 import { RedisModule } from '@packages/nest-redis';
-import { RedisConfig } from './config/redis.config';
-import { InvitationModule } from './invitation/invitation.module';
+import { RedisConfig } from './common/config/redis.config';
 import { WorkspaceModule } from './workspace/workspace.module';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { PostgreSqlDriver } from '@mikro-orm/postgresql';
 
 @Module({
   imports: [
     TypedConfigModule.forRoot(configOptions),
-    DrizzleModule.forRootAsync({
+    MikroOrmModule.forRootAsync({
       inject: [DatabaseConfig],
-      useFactory: (databaseConfig: DatabaseConfig) => ({
-        connectionConfig: { ...databaseConfig },
-        options: { schema },
+      useFactory: ({ host, database, user, password }: DatabaseConfig) => ({
+        driver: PostgreSqlDriver,
+        dbName: database,
+        host,
+        user,
+        password,
+        autoLoadEntities: true,
+        debug: true,
       }),
     }),
     RedisModule.forRootAsync({
@@ -25,7 +28,6 @@ import { WorkspaceModule } from './workspace/workspace.module';
       useFactory: (redisConfig: RedisConfig) => redisConfig,
     }),
     WorkspaceModule,
-    InvitationModule,
   ],
   controllers: [],
   providers: [],

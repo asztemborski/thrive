@@ -4,3 +4,4 @@ export * from "./private-controller.decorator";
 export * from "./user.decorator";
 export * from "./validation-pipe.config";
 export * from "./exception.interceptor";
+export * from "./exception.filter";

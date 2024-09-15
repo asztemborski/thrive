@@ -23,7 +23,7 @@ export class PublicAuthController {
     const command = new ValidateCommand(request.headers.authorization);
     const claims = await this.commandBus.execute(command);
     response.setHeader('x-user', JSON.stringify(claims));
-    response.status(200).send();
+    return response.status(200).send();
   }
 
   @Post('authenticate')
@@ -33,9 +33,13 @@ export class PublicAuthController {
     summary: 'Authenticates user.',
     description: 'Authenticates and retrieves user auth tokens',
   })
-  async authenticate(@Body() request: AuthenticateRequestDto): Promise<AuthTokensDto> {
-    const command = new AuthenticateCommand(request);
-    return this.commandBus.execute(command);
+  async authenticate(@Body() request: AuthenticateRequestDto): Promise<AuthTokensDto | undefined> {
+    try {
+      const command = new AuthenticateCommand(request);
+      return this.commandBus.execute(command);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   @Post('refresh')

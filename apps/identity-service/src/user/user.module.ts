@@ -8,9 +8,16 @@ import { commandHandlers } from './commands';
 import { serviceProviders } from './services';
 import { repositoryProviders } from './database';
 import { AuthModule } from '../auth/auth.module';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { databaseSchemas } from './database/schemas';
 
 @Module({
-  imports: [TypedConfigModule.forRoot(configOptions), CqrsModule, forwardRef(() => AuthModule)],
+  imports: [
+    MikroOrmModule.forFeature([...databaseSchemas]),
+    TypedConfigModule.forRoot(configOptions),
+    CqrsModule,
+    forwardRef(() => AuthModule),
+  ],
   controllers: [PublicUserController],
   providers: [...commandHandlers, ...serviceProviders, ...repositoryProviders],
   exports: [...serviceProviders, ...repositoryProviders],

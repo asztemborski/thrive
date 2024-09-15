@@ -1,39 +1,17 @@
-import { v4 as uuid } from "uuid";
-
 export type EntityId = string;
 
-export type BaseEntityProps = {
-  id: EntityId;
-};
+export abstract class EntityBase<T = EntityId> {
+  private _id: T;
 
-export type CreateBaseEntityProps = {
-  id?: EntityId;
-};
-
-export abstract class EntityBase<TEntityProps> {
-  private _id: EntityId;
-
-  protected readonly properties: TEntityProps;
-
-  constructor(properties: TEntityProps & CreateBaseEntityProps) {
-    this.properties = properties;
-    this.id = properties.id ?? uuid();
+  constructor(id: T) {
+    this.id = id;
   }
 
-  private set id(value: string) {
+  private set id(value: T) {
     this._id = value;
   }
 
-  get id(): EntityId {
+  get id(): T {
     return this._id;
-  }
-
-  getProperties(): BaseEntityProps & TEntityProps {
-    const props = {
-      id: this._id,
-      ...this.properties,
-    };
-
-    return Object.freeze(props);
   }
 }

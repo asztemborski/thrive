@@ -1,13 +1,10 @@
 import { ValueObject } from '@packages/nest-ddd';
 import { isEmpty } from '@packages/nest-utilities';
-import {
-  EmptyEmailAddressException,
-  InvalidEmailAddressException,
-} from './exceptions';
+import { EmptyEmailAddressException, InvalidEmailAddressException } from './exceptions';
 
 export type EmailProperties = {
   address: string;
-  isConfirmed: boolean;
+  isVerified: boolean;
 };
 
 const MAIL_REGEX = /^[\w-.]+@?([\w-]+\.)+[\w-]{2,4}$/;
@@ -24,10 +21,10 @@ export class Email extends ValueObject<EmailProperties> {
   }
 
   get address(): string {
-    return this.properties.address;
+    return this.props.address;
   }
 
-  get isConfirmed(): boolean {
-    return this.properties.isConfirmed;
+  get isVerified(): boolean {
+    return this.props.isVerified;
   }
 }

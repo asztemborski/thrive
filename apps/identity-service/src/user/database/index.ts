@@ -3,7 +3,6 @@ import { IUserRepository } from '../contracts';
 import { UserRepository } from './user.repository';
 
 export * from './user.repository';
-export * from './user.schema';
 
 export const repositoryProviders: Provider[] = [
   {

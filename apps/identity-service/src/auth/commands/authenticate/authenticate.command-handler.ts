@@ -1,11 +1,12 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { Inject } from '@nestjs/common';
+import { ForbiddenException, Inject } from '@nestjs/common';
 
 import { AuthenticateCommand } from './authenticate.command';
 import { AuthTokensDto } from '../../dtos';
 import { IUserRepository, IValueHasher } from '../../../user/contracts';
 import { ITokenService } from '../../contracts';
 import { UnauthorizedException } from '../../exceptions';
+import { ExceptionBase } from '@packages/nest-exceptions';
 
 @CommandHandler(AuthenticateCommand)
 export class AuthenticateCommandHandler implements ICommandHandler<AuthenticateCommand> {
@@ -18,7 +19,7 @@ export class AuthenticateCommandHandler implements ICommandHandler<AuthenticateC
   async execute(command: AuthenticateCommand): Promise<AuthTokensDto> {
     const user = await this.userRepository.getByEmail(command.email);
 
-    if (!user || !user.email.isConfirmed) {
+    if (!user || !user.email.isVerified) {
       throw new UnauthorizedException();
     }
 

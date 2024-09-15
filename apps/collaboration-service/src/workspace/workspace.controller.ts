@@ -3,13 +3,10 @@ import { Body, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { PrivateController, User, UserPayload } from '@packages/nest-api';
 
 import { CreateWorkspaceRequestDto, GetWorkspaceResponseDto } from './dtos';
-
+import { CreateWorkspaceCommand } from './features/commands/create-workspace';
 import { IsWorkspaceMemberGuard } from '../common/guards';
-import { AddMemberCommand } from './commands/add-member/add-member.command';
-
-import { GetWorkspaceQuery } from './queries/get-workspace';
-import { CreateWorkspaceCommand } from './commands/create-workspace';
-import { GetWorkspacesQuery } from './queries/get-workspaces';
+import { WorkspacesListQuery } from './features/queries/workspaces-list';
+import { WorkspaceDetailsQuery } from './features/queries/workspace-details';
 
 @PrivateController({ version: '1', path: 'workspace' })
 export class PrivateWorkspaceController {
@@ -20,7 +17,7 @@ export class PrivateWorkspaceController {
 
   @Get()
   async getWorkspaces(@User() user: UserPayload): Promise<GetWorkspaceResponseDto[]> {
-    const query = new GetWorkspacesQuery(user.id);
+    const query = new WorkspacesListQuery(user.id);
     return this.queryBus.execute(query);
   }
 
@@ -36,20 +33,7 @@ export class PrivateWorkspaceController {
   @Get(':workspaceId')
   @UseGuards(IsWorkspaceMemberGuard)
   async getWorkspace(@Param('workspaceId') workspaceId: string): Promise<GetWorkspaceResponseDto> {
-    const query = new GetWorkspaceQuery(workspaceId);
+    const query = new WorkspaceDetailsQuery(workspaceId);
     return await this.queryBus.execute(query);
-  }
-
-  @Get('join/:invitationId')
-  async joinWorkspace(
-    @Param('invitationId') invitationId: string,
-    @User() user: UserPayload,
-  ): Promise<void> {
-    const command = new AddMemberCommand({
-      userId: user.id,
-      memberName: user.username,
-      invitationId,
-    });
-    await this.commandBus.execute(command);
   }
 }

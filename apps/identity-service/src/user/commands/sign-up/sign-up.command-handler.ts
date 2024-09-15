@@ -14,6 +14,8 @@ import { UserConfig } from '../../config/user.config';
 import { User } from '../../domain/user.entity';
 import { ITokenService } from '../../../auth/contracts';
 import { AppConfig } from '../../../config';
+import { Email } from '../../domain/email.value-object';
+import { Username } from '../../domain/username.value-object';
 
 @CommandHandler(SignUpCommand)
 export class SignUpCommandHandler implements ICommandHandler<SignUpCommand> {
@@ -48,13 +50,19 @@ export class SignUpCommandHandler implements ICommandHandler<SignUpCommand> {
     if (!isUsernameUnique) throw new UsernameAlreadyInUseException(command.username);
 
     const hashedPassword = await this.valueHasher.hash(command.password);
-    const user = User.create({ ...command, password: hashedPassword });
+
+    const user = new User({
+      email: new Email({ address: command.email, isVerified: false }),
+      username: new Username({ value: command.username }),
+      password: hashedPassword,
+    });
+
     await this.userRepository.insert(user);
 
     this.logger.log(`Created new user with email address: ${user.email.address}`);
 
     if (this.config.emailVerificationDisabled) {
-      user.confirmEmailAddress();
+      user.verifyEmailAddress();
       await this.userRepository.update(user);
       return this.logger.warn(
         `Email verification disabled. Skipped verification process for user: ${user.email.address}`,

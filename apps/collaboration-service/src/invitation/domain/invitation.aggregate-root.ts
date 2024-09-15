@@ -14,35 +14,38 @@ type CreateInvitationProperties = {
   creatorId: string;
 };
 
-export class Invitation extends AggregateRoot<InvitationProperties> {
-  constructor(properties: CreateInvitationProperties) {
-    const id = crypto.randomBytes(20).toString('hex');
-    super({ ...properties, id, createdAt: new Date() });
-  }
+export class Invitation extends AggregateRoot {
+  readonly _creatorId: string;
+  readonly _createdAt: Date;
 
-  setExpirationDate(date: Date): void {
-    if (date.getTime() <= new Date().getTime()) {
-      throw new InvalidInvitationExpirationDateException();
-    }
+  // constructor(properties: CreateInvitationProperties) {
+  //   const id = crypto.randomBytes(20).toString('hex');
+  //   super({ ...properties, id, createdAt: new Date() });
+  // }
 
-    this.properties.expiresAt = date;
-  }
-
-  get organizationId(): string {
-    return this.properties.workspaceId;
-  }
+  // setExpirationDate(date: Date): void {
+  //   if (date.getTime() <= new Date().getTime()) {
+  //     throw new InvalidInvitationExpirationDateException();
+  //   }
+  //
+  //   this.props.expiresAt = date;
+  // }
+  //
+  // get organizationId(): string {
+  //   return this.props.workspaceId;
+  // }
 
   get creatorId(): string {
-    return this.properties.creatorId;
+    return this._creatorId;
   }
 
   get isExpired(): boolean {
-    const { expiresAt } = this.properties;
+    // const { expiresAt } = this.props;
 
-    return expiresAt ? expiresAt <= new Date() : false;
+    return false;
   }
 
   get createdAt(): Date {
-    return this.properties.createdAt;
+    return this._createdAt;
   }
 }

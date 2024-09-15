@@ -20,7 +20,7 @@ const tokenServiceMock = {
 };
 
 const userMock = new User({
-  email: new Email({ address: 'test@test.com', isConfirmed: false }),
+  email: new Email({ address: 'test@test.com', isVerified: false }),
   username: new Username({ value: 'test' }),
   password: 'testPassw!@#',
 });

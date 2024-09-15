@@ -1,1 +1,1 @@
-export * from './workspace-name.value-object';
+export * from './workspace-details.value-object';

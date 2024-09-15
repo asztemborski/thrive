@@ -4,20 +4,24 @@ import { TypedConfigModule } from 'nest-typed-config';
 import { RabbitmqModule } from '@packages/nest-rabbitmq';
 import { RedisModule } from '@packages/nest-redis';
 
-import { AppConfig, configOptions, RabbitmqConfig, RedisConfig } from './config';
+import { AppConfig, configOptions, DatabaseConfig, RabbitmqConfig, RedisConfig } from './config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
-import { DrizzleModule } from '@packages/nest-drizzle';
-import { schema } from './database/schema';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { PostgreSqlDriver } from '@mikro-orm/postgresql';
 
 @Module({
   imports: [
     TypedConfigModule.forRoot(configOptions),
-    DrizzleModule.forRootAsync({
-      inject: [AppConfig],
-      useFactory: ({ database }: AppConfig) => ({
-        connectionConfig: { ...database },
-        options: { schema },
+    MikroOrmModule.forRootAsync({
+      inject: [DatabaseConfig],
+      useFactory: ({ host, database, user, password }: DatabaseConfig) => ({
+        driver: PostgreSqlDriver,
+        dbName: database,
+        host,
+        user,
+        password,
+        autoLoadEntities: true,
       }),
     }),
     RedisModule.forRootAsync({

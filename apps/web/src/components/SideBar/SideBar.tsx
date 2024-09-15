@@ -26,7 +26,6 @@ export type Workspace = {
   id: string;
   name: string;
   description: string;
-  iconUrl: string | null;
 };
 
 const SideNavigationBar = () => {
@@ -63,6 +62,7 @@ const SideNavigationBar = () => {
   useEffect(() => {
     const fetchUserWorkspaces = async (): Promise<void> => {
       const response = await collaborationApiClient.getWorkspacesRequest();
+      console.log(response);
       setWorkspaces(response);
       setIsLoading(false);
     };

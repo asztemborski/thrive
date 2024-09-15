@@ -1,56 +1,55 @@
 import { Inject, Injectable } from '@nestjs/common';
-
-import { IUserMapper, IUserRepository } from '../contracts';
-
-import { InjectDrizzle } from '@packages/nest-drizzle';
-import { Database } from '../../database/schema';
-import { eq, or } from 'drizzle-orm';
+import { IUserRepository } from '../contracts';
 import { User } from '../domain/user.entity';
-import { users } from './user.schema';
+import { EntityManager } from '@mikro-orm/core';
+import { UserEntitySchema } from './schemas';
+import { Username } from '../domain/username.value-object';
+import { Email } from '../domain/email.value-object';
 
 @Injectable()
 export class UserRepository implements IUserRepository {
-  constructor(
-    @InjectDrizzle() private readonly database: Database,
-    @Inject(IUserMapper) private readonly userMapper: IUserMapper,
-  ) {}
+  constructor(private readonly entityManager: EntityManager) {}
 
   async getById(id: string): Promise<User | undefined> {
-    const user = await this.database.query.users.findFirst({
-      where: (user) => eq(user.id, id),
+    const user = await this.entityManager.findOne(User, {
+      id: id,
     });
 
-    return user && this.userMapper.toDomain(user);
+    return user ?? undefined;
   }
 
   async getByEmail(email: string): Promise<User | undefined> {
-    const user = await this.database.query.users.findFirst({
-      where: (user) => eq(user.emailAddress, email),
+    const user = await this.entityManager.findOne(User, {
+      email: { address: email },
     });
 
-    return user && this.userMapper.toDomain(user);
+    return user ?? undefined;
   }
 
   async insert(user: User): Promise<void> {
-    const accountSchema = this.userMapper.toPersistence(user);
-    await this.database.insert(users).values(accountSchema);
+    this.entityManager.persist(user);
+    await this.entityManager.flush();
   }
 
   async isUnique(
     email: string,
     username: string,
   ): Promise<[emailUnique: boolean, usernameUnique: boolean]> {
-    const user = await this.database.query.users.findFirst({
-      where: (user) => or(eq(user.emailAddress, email), eq(user.username, username)),
-    });
+    const user = await this.entityManager.findOne(
+      User,
+      {
+        $or: [{ email: { address: email } }, { username: new Username({ value: username }) }],
+      },
+      { fields: ['email', 'username'] },
+    );
 
-    return user ? [user.emailAddress !== email, user.username !== username] : [true, true];
+    if (!user) return [true, true];
+
+    return [user.email.address !== email, user.username.value !== username];
   }
 
   async update(user: User): Promise<void> {
-    await this.database
-      .update(users)
-      .set(this.userMapper.toPersistence(user))
-      .where(eq(users.id, user.id));
+    this.entityManager.persist(user);
+    await this.entityManager.flush();
   }
 }

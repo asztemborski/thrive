@@ -7,7 +7,6 @@ import {
 import { rethrow } from "@nestjs/core/helpers/rethrow";
 import { catchError, Observable } from "rxjs";
 import { ExceptionBase } from "@packages/nest-exceptions";
-
 import { ApiErrorResponse } from "./api-error.response";
 
 const createErrorApiResponse = (error: ExceptionBase) => {
@@ -29,6 +28,7 @@ export class ExceptionInterceptor implements NestInterceptor {
     return next.handle().pipe(
       catchError((error: unknown) => {
         if (error instanceof ExceptionBase) {
+          console.log(error);
           error = createErrorApiResponse(error);
         }
 

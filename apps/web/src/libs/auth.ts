@@ -1,7 +1,8 @@
-import identityApiClient from '@/api/identity/identityApiClient';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { JWT } from 'next-auth/jwt';
 import { NextAuthOptions, Session, User } from 'next-auth';
+import { API_URL } from '@/constants/common';
+import client from '@/api/client';
 
 type UserPayload = {
   id: string;
@@ -18,10 +19,19 @@ type Credentials = Record<'email' | 'password', string> | undefined;
 const authorize = async (credentials: Credentials): Promise<User | null> => {
   if (!credentials) return null;
 
-  const response = await identityApiClient.authenticateRequest(credentials);
-  const { id, email, username } = decodeAccessToken(response.accessToken);
+  const response = await fetch(`${API_URL}/identity/v1/public/auth/authenticate`, {
+    method: 'POST',
+    body: JSON.stringify(credentials),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
-  return { id, email, username, ...response };
+  if (!response.ok) return null;
+
+  const data = await response.json();
+  const { id, email, username } = decodeAccessToken(data.accessToken);
+  return { id, email, username, ...data };
 };
 
 type JwtCallbackParams = {
@@ -47,21 +57,30 @@ const jwtCallback = async ({ token, user }: JwtCallbackParams): Promise<JWT> => 
   }
 
   try {
-    const response = await identityApiClient.refreshTokenRequest(token.refreshToken);
-    const { id, email, username } = decodeAccessToken(response.accessToken);
+    const response = await fetch(`${API_URL}/identity/v1/public/auth/refresh`, {
+      method: 'POST',
+      body: JSON.stringify({ refreshToken: token.refreshToken }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const data = await response.json();
+    const { id, email, username } = decodeAccessToken(data.accessToken);
+
+    client.defaults.headers.common.Authorization = `Bearer ${data.accessToken}`;
 
     token = {
       ...token,
-      accessToken: response.accessToken,
-      refreshToken: response.refreshToken,
-      expiresAt: response.expiresAt,
+      accessToken: data.accessToken,
+      refreshToken: data.refreshToken,
+      expiresAt: data.expiresAt,
       user: { id, email, username },
       error: '',
     };
 
     return token;
   } catch (err) {
-    console.log(err);
     return { ...token, error: 'RefreshTokenError' };
   }
 };
@@ -76,6 +95,9 @@ const sessionCallback = async ({ session, token }: SessionCallbackParams): Promi
   session.refreshToken = token.refreshToken;
   session.error = token.error;
   session.user = token.user;
+
+  client.defaults.headers.common.Authorization = `Bearer ${token.accessToken}`;
+
   return session;
 };
 

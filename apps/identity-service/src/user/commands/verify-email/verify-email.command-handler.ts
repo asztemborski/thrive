@@ -24,7 +24,7 @@ export class VerifyEmailCommandHandler implements ICommandHandler<VerifyEmailCom
     const user = await this.userRepository.getById(userId);
     if (!user) throw new UnauthorizedException();
 
-    user.confirmEmailAddress();
+    user.verifyEmailAddress();
     await this.userRepository.update(user);
 
     this.logger.log(`User ${user.id} successfully verified`);

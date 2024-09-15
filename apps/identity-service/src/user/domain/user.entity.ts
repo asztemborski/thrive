@@ -9,48 +9,42 @@ type UserProperties = {
   password: string;
 };
 
-type CreateUserProperties = {
-  email: string;
-  username: string;
-  password: string;
-};
+export class User extends AggregateRoot {
+  private readonly _username: Username;
+  private _email: Email;
+  private _password: string;
 
-export class User extends AggregateRoot<UserProperties> {
-  static create({ email, username, password }: CreateUserProperties): User {
-    const userEmail = new Email({ address: email, isConfirmed: false });
-    const validatedUsername = new Username({ value: username });
-
-    return new User({
-      email: userEmail,
-      username: validatedUsername,
-      password,
-    });
+  constructor(properties: UserProperties) {
+    super(crypto.randomUUID());
+    this._email = properties.email;
+    this._username = properties.username;
+    this._password = properties.password;
   }
 
-  confirmEmailAddress(): void {
-    if (this.email.isConfirmed) {
+  verifyEmailAddress(): void {
+    if (this.email.isVerified) {
       throw new EmailAlreadyConfirmedException();
     }
 
-    this.properties.email = new Email({
+    this._email = new Email({
       address: this.email.address,
-      isConfirmed: true,
+      isVerified: true,
     });
   }
 
   changePassword(newPassword: string): void {
-    this.properties.password = newPassword;
+    this._password = newPassword;
   }
 
   get email(): Email {
-    return this.properties.email;
+    return this._email;
   }
 
-  get username(): string {
-    return this.properties.username.value;
+  get username(): Username {
+    return this._username;
   }
 
   get password(): string {
-    return this.properties.password;
+    return this._password;
   }
 }

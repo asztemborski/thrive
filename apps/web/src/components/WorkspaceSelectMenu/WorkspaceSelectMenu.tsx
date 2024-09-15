@@ -14,7 +14,6 @@ import WorkspaceAvatar from '@/components/WorkspaceAvatar/WorkspaceAvatar';
 type Workspace = {
   id: string;
   name: string;
-  iconUrl: string | null;
   description: string;
 };
 
@@ -39,7 +38,7 @@ const WorkspaceSelectMenu = ({
     <Popover>
       <PopoverTrigger>
         {currentWorkspace && !isLoading && (
-          <WorkspaceAvatar name={currentWorkspace.name} iconUrl={currentWorkspace.iconUrl} />
+          <WorkspaceAvatar name={currentWorkspace.name} iconUrl={null} />
         )}
         {!currentWorkspace && !isLoading && (
           <Avatar>
@@ -65,11 +64,7 @@ const WorkspaceSelectMenu = ({
                   className="justify-normal px-1 mb-1 mr-3"
                 >
                   <div className="flex flex-row items-center gap-2">
-                    <WorkspaceAvatar
-                      className="h-9 w-9"
-                      name={workspace.name}
-                      iconUrl={workspace.iconUrl}
-                    />
+                    <WorkspaceAvatar className="h-9 w-9" name={workspace.name} iconUrl={null} />
                     <span className="text-sm">{workspace.name}</span>
                   </div>
                 </Button>

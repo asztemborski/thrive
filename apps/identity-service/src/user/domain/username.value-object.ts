@@ -1,9 +1,6 @@
 import { DomainPrimitive, ValueObject } from '@packages/nest-ddd';
 import { isEmpty } from '@packages/nest-utilities';
-import {
-  EmptyUsernameException,
-  UsernameIsTooShortException,
-} from './exceptions';
+import { EmptyUsernameException, UsernameIsTooShortException } from './exceptions';
 
 export class Username extends ValueObject<string> {
   protected validate({ value }: DomainPrimitive<string>): void {
@@ -17,6 +14,6 @@ export class Username extends ValueObject<string> {
   }
 
   get value(): string {
-    return this.properties.value;
+    return this.props.value;
   }
 }

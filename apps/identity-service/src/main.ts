@@ -5,11 +5,12 @@ import { ExceptionInterceptor, validationPipeConfig } from '@packages/nest-api';
 
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { HttpExceptionFilter } from '@packages/nest-api';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.useGlobalPipes(new ValidationPipe(validationPipeConfig));
-  app.useGlobalInterceptors(new ExceptionInterceptor());
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   app.enableVersioning({
     type: VersioningType.URI,

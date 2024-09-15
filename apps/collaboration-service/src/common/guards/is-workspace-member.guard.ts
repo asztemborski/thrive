@@ -2,11 +2,13 @@ import { CanActivate, ExecutionContext, Inject, Injectable } from '@nestjs/commo
 
 import { UserPayload } from '@packages/nest-api';
 import { IWorkspaceRepository } from '../../workspace/contracts';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { Workspace } from '../../workspace/domain/entities';
 
 @Injectable()
 export class IsWorkspaceMemberGuard implements CanActivate {
   constructor(
-    @Inject(IWorkspaceRepository)
+    @InjectRepository(Workspace)
     private readonly workspaceRepository: IWorkspaceRepository,
   ) {}
 
@@ -20,6 +22,6 @@ export class IsWorkspaceMemberGuard implements CanActivate {
     }
 
     const user = JSON.parse(userHeader) as UserPayload;
-    return await this.workspaceRepository.memberExists(workspaceId, user.id);
+    return this.workspaceRepository.memberExists(workspaceId, user.id);
   }
 }

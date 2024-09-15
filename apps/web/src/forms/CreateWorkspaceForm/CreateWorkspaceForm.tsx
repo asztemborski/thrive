@@ -38,7 +38,7 @@ const CreateWorkspaceForm = ({ onSuccess }: CreateWorkspaceFormProps) => {
 
   const onSubmit = async (data: CreateWorkspaceFormValues) => {
     const id = await collaborationApiClient.createWorkspaceRequest(data);
-    onSuccess && onSuccess({ id, ...data, iconUrl: null });
+    onSuccess && onSuccess({ id, ...data });
   };
 
   return (

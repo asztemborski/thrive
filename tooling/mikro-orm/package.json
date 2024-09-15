@@ -1,0 +1,21 @@
+{
+  "name": "mikro-orm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@mikro-orm/cli": "^6.3.9",
+    "@mikro-orm/migrations": "^6.3.9",
+    "@mikro-orm/postgresql": "^6.3.9",
+    "identity-service": "workspace:*",
+    "collaboration-service": "workspace:*",
+    "ts-node": "^10.9.1",
+    "tsc": "^2.0.4"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

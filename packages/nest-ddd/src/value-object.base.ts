@@ -9,11 +9,11 @@ export type ValueObjectProperties<T> = T extends Primitive
   : T;
 
 export abstract class ValueObject<T> {
-  protected readonly properties: Readonly<ValueObjectProperties<T>>;
+  protected readonly props: Readonly<ValueObjectProperties<T>>;
 
   constructor(properties: ValueObjectProperties<T>) {
     this.validate(properties);
-    this.properties = Object.freeze(properties);
+    this.props = Object.freeze(properties);
   }
 
   equals(valueObject: ValueObject<T>): boolean {
@@ -23,11 +23,11 @@ export abstract class ValueObject<T> {
   }
 
   unpack(): Readonly<ValueObjectProperties<T>> | T {
-    if (this.isDomainPrimitive(this.properties)) {
-      return this.properties.value;
+    if (this.isDomainPrimitive(this.props)) {
+      return this.props.value;
     }
 
-    return this.properties;
+    return this.props;
   }
 
   protected abstract validate(props: ValueObjectProperties<T>): void;

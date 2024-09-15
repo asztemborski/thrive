@@ -21,7 +21,7 @@ export class TokensService implements ITokenService {
   async generateAccess(user: User): Promise<AuthTokensDto> {
     const claims = {
       id: user.id,
-      username: user.username,
+      username: user.username.value,
       email: user.email.address,
     };
 

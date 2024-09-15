@@ -1,18 +1,17 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 
-import { repositoryProviders } from './repositories';
-import { mapperProviders } from './mappers';
-import { commandHandlers } from './commands';
+import { commandHandlers } from './features/commands';
 import { CommonModule } from '../common/common.module';
-import { queryHandlers } from './queries';
-import { InvitationModule } from '../invitation/invitation.module';
+import { queryHandlers } from './features/queries';
+
 import { PrivateWorkspaceController } from './workspace.controller';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { databaseSchemas } from './database/schemas';
 
 @Module({
-  imports: [CqrsModule, forwardRef(() => CommonModule), forwardRef(() => InvitationModule)],
+  imports: [MikroOrmModule.forFeature([...databaseSchemas]), CqrsModule, CommonModule],
   controllers: [PrivateWorkspaceController],
-  providers: [...repositoryProviders, ...mapperProviders, ...commandHandlers, ...queryHandlers],
-  exports: [...repositoryProviders, ...mapperProviders],
+  providers: [...commandHandlers, ...queryHandlers],
 })
 export class WorkspaceModule {}

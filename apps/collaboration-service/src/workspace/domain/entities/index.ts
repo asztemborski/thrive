@@ -1,2 +1,2 @@
-export * from './workspace-member.entity';
-export * from './workspace-role.entity';
+export * from './workspace.aggregate-root';
+export * from './thread.entity';

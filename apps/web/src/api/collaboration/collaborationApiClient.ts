@@ -6,19 +6,21 @@ type GetWorkspacesResponse = {
   id: string;
   name: string;
   description: string;
-  iconUrl: string | null;
 }[];
 
 type GetWorkspaceRequest = {
   id: string;
   name: string;
   description: string;
-  iconUrl: string | null;
 };
 
 type CreateWorkspaceRequest = {
   name: string;
   description: string;
+};
+
+type CreateWorkspaceThreadRequest = {
+  name: string;
 };
 
 const getWorkspacesRequest = async (): Promise<GetWorkspacesResponse> => {
@@ -36,10 +38,22 @@ const createWorkspaceRequest = async (body: CreateWorkspaceRequest): Promise<str
   return response.data;
 };
 
+const createWorkspaceThreadRequest = async (
+  workspaceId: string,
+  body: CreateWorkspaceThreadRequest,
+) => {
+  const response = await client.post(
+    `${COLLABORATION_ROUTE}/workspace/${workspaceId}/thread`,
+    body,
+  );
+  return response.data;
+};
+
 const requests = {
   getWorkspacesRequest,
   createWorkspaceRequest,
   getWorkspaceRequest,
+  createWorkspaceThreadRequest,
 };
 
 export default requests;
