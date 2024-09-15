@@ -34,7 +34,6 @@
     "@nestjs/swagger": "^7.4.0",
     "@packages/nest-api": "workspace:*",
     "@packages/nest-ddd": "workspace:*",
-    "@packages/nest-drizzle": "workspace:*",
     "@packages/nest-exceptions": "workspace:*",
     "@packages/nest-rabbitmq": "workspace:*",
     "@packages/nest-redis": "workspace:*",
