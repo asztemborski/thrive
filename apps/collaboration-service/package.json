@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@mikro-orm/cli": "^6.3.1",
-    "@mikro-orm/core": "^6.3.1",
+    "@mikro-orm/core": "^6.3.10",
     "@mikro-orm/migrations": "^6.3.9",
     "@mikro-orm/nestjs": "^6.0.2",
     "@mikro-orm/postgresql": "^6.3.1",
@@ -36,6 +36,7 @@
     "@packages/nest-exceptions": "workspace:*",
     "@packages/nest-redis": "workspace:*",
     "@packages/nest-utilities": "workspace:*",
+    "@packages/database-utilities": "workspace:*",
     "drizzle-orm": "^0.30.9",
     "ioredis": "^5.4.1",
     "nest-typed-config": "^2.9.3",

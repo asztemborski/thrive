@@ -3,6 +3,7 @@ import { CreateThreadCommand } from './create-thread.command';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { WorkspaceThreads } from '../../../domain/entities';
 import { EntityRepository } from '@mikro-orm/core';
+import { WorkspaceThreadsNotFoundException } from '../../../exceptions';
 
 @CommandHandler(CreateThreadCommand)
 export class CreateThreadCommandHandler implements ICommandHandler<CreateThreadCommand> {
@@ -14,7 +15,9 @@ export class CreateThreadCommandHandler implements ICommandHandler<CreateThreadC
   async execute(command: CreateThreadCommand): Promise<void> {
     const workspaceThreads = await this.workspaceThreadsRepository.findOne(command.workspaceId);
 
-    if (!workspaceThreads) throw new Error('Workspace threads not found');
+    if (!workspaceThreads) {
+      throw new WorkspaceThreadsNotFoundException(command.workspaceId);
+    }
 
     await workspaceThreads.categories.init();
     await workspaceThreads.threads.init();

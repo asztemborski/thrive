@@ -6,10 +6,11 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { eventHandlers } from './features/event-handlers';
 import { commandHandlers } from './features/commands';
 import { PrivateThreadController } from './thread.controller';
+import { queryHandlers } from './features/queries';
 
 @Module({
   imports: [MikroOrmModule.forFeature(databaseSchemas), EventEmitterModule.forRoot(), CqrsModule],
   controllers: [PrivateThreadController],
-  providers: [...eventHandlers, ...commandHandlers],
+  providers: [...eventHandlers, ...commandHandlers, ...queryHandlers],
 })
 export class ThreadModule {}

@@ -4,8 +4,8 @@ import { ThreadCategory, WorkspaceThreads } from '../../domain/entities';
 export const ThreadCategoryEntitySchema = new EntitySchema<unknown>({
   class: ThreadCategory,
   properties: {
-    _id: { name: 'id', type: 'uuid', primary: true },
-    _name: { name: 'name', type: 'varchar' },
+    _id: { name: 'id', type: 'uuid', primary: true, hidden: true },
+    _name: { name: 'name', type: 'varchar', hidden: true },
     _workspaceId: {
       kind: 'm:1',
       name: 'workspace_id',
@@ -18,14 +18,17 @@ export const ThreadCategoryEntitySchema = new EntitySchema<unknown>({
       entity: ThreadCategory.name,
       mapToPk: true,
       nullable: true,
+      hidden: true,
     },
     _subCategories: {
       kind: '1:m',
       entity: ThreadCategory.name,
       mappedBy: '_parentCategoryId',
+      hidden: true,
     },
     id: { type: 'method', getter: true, persist: false },
     name: { type: 'method', getter: true, persist: false },
+    parentCategoryId: { type: 'method', getter: true, persist: false },
   },
   schema: 'collaboration',
 });

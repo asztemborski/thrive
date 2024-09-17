@@ -1,5 +1,6 @@
 import { EntityBase } from '@packages/nest-ddd';
 import { Collection } from '@mikro-orm/core';
+import { SubCategoryCannotHaveSubCategoriesException } from '../exceptions';
 
 type CreateThreadCategoryProperties = {
   name: string;
@@ -23,7 +24,7 @@ export class ThreadCategory extends EntityBase {
 
   addSubCategory(name: string): ThreadCategory {
     if (this._parentCategoryId) {
-      throw new Error('Sub category cannot have sub categories');
+      throw new SubCategoryCannotHaveSubCategoriesException();
     }
 
     const subCategory = new ThreadCategory({
@@ -38,5 +39,9 @@ export class ThreadCategory extends EntityBase {
 
   get name(): string {
     return this._name;
+  }
+
+  get parentCategoryId(): string | undefined {
+    return this._parentCategoryId;
   }
 }

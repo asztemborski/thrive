@@ -1,4 +1,5 @@
 import { EntityBase } from '@packages/nest-ddd';
+import { ThreadCannotBeAssignedToCurrentCategoryException } from '../exceptions';
 
 type CreateThreadProperties = {
   name: string;
@@ -18,9 +19,17 @@ export class Thread extends EntityBase {
 
   assignToCategory(categoryId: string): void {
     if (categoryId === this._categoryId) {
-      throw new Error('Cannot assign to current category');
+      throw new ThreadCannotBeAssignedToCurrentCategoryException();
     }
 
     this._categoryId = categoryId;
+  }
+
+  get name(): string {
+    return this._name;
+  }
+
+  get categoryId(): string | undefined {
+    return this._categoryId;
   }
 }

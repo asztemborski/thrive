@@ -1,7 +1,14 @@
 import { AggregateRoot } from '@packages/nest-ddd';
-import { Collection } from '@mikro-orm/core';
+import { Collection, EntityRepository, EntityRepositoryType } from '@mikro-orm/core';
 import { Thread } from './thread.entity';
 import { ThreadCategory } from './thread-category.entity';
+import {
+  CategoryDoesNotExistException,
+  CategoryMaximumCountExceedException,
+  ThreadMaximumCountExceedException,
+} from '../exceptions';
+import { WorkspaceThreadsRepository } from '../../database/repositories';
+import { ReadonlyCollection } from '@packages/database-utilities';
 
 type CreateWorkspaceThreadsProperties = {
   id: string;
@@ -19,7 +26,11 @@ export class WorkspaceThreads extends AggregateRoot {
 
   addThread(name: string, categoryId?: string): void {
     if (this._threads.count() > 100) {
-      throw new Error('Threads count cannot exceed 100');
+      throw new ThreadMaximumCountExceedException(100);
+    }
+
+    if (categoryId && !this.findCategory(categoryId)) {
+      throw new CategoryDoesNotExistException(categoryId);
     }
 
     const thread = new Thread({ name, workspaceId: this._id });
@@ -30,7 +41,7 @@ export class WorkspaceThreads extends AggregateRoot {
 
   addCategory(name: string, parentCategoryId?: string): void {
     if (this._categories.count() > 30) {
-      throw new Error('Categories count cannot exceed 30');
+      throw new CategoryMaximumCountExceedException(30);
     }
 
     if (!parentCategoryId) {
@@ -41,7 +52,7 @@ export class WorkspaceThreads extends AggregateRoot {
     const parentCategory = this.findCategory(parentCategoryId);
 
     if (!parentCategory) {
-      throw new Error('Category not found');
+      throw new CategoryDoesNotExistException(parentCategoryId);
     }
 
     const subCategory = parentCategory.addSubCategory(name);
@@ -52,11 +63,15 @@ export class WorkspaceThreads extends AggregateRoot {
     return this._categories.find((category) => category.id === id);
   }
 
-  get categories(): Collection<ThreadCategory> {
+  get categories(): ReadonlyCollection<ThreadCategory> {
     return this._categories;
   }
 
-  get threads(): Collection<Thread> {
+  get threads(): ReadonlyCollection<Thread> {
     return this._threads;
   }
+}
+
+export interface WorkspaceThreads {
+  [EntityRepositoryType]: WorkspaceThreadsRepository;
 }
