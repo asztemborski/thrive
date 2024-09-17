@@ -1,6 +1,6 @@
 import { IInvitationRepository } from '../contracts/invitation-repository.contract';
 import { Inject, Injectable, NotImplementedException } from '@nestjs/common';
-import { InjectDrizzle } from '@packages/nest-drizzle';
+
 // import { Database } from '../../common/database/schema';
 // import { invitations } from './schemas';
 import { eq } from 'drizzle-orm';

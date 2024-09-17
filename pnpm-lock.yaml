@@ -66,9 +66,6 @@ importers:
       '@packages/nest-ddd':
         specifier: workspace:*
         version: link:../../packages/nest-ddd
-      '@packages/nest-drizzle':
-        specifier: workspace:*
-        version: link:../../packages/nest-drizzle
       '@packages/nest-exceptions':
         specifier: workspace:*
         version: link:../../packages/nest-exceptions
@@ -217,9 +214,6 @@ importers:
       '@packages/nest-ddd':
         specifier: workspace:*
         version: link:../../packages/nest-ddd
-      '@packages/nest-drizzle':
-        specifier: workspace:*
-        version: link:../../packages/nest-drizzle
       '@packages/nest-exceptions':
         specifier: workspace:*
         version: link:../../packages/nest-exceptions
@@ -605,31 +599,6 @@ importers:
       '@packages/nest-utilities':
         specifier: workspace:*
         version: link:../nest-utilities
-      uuid:
-        specifier: ^10.0.0
-        version: 10.0.0
-    devDependencies:
-      '@tooling/typescript-config':
-        specifier: workspace:*
-        version: link:../../tooling/typescript-config
-      '@types/uuid':
-        specifier: ^10.0.0
-        version: 10.0.0
-
-  packages/nest-drizzle:
-    dependencies:
-      '@nestjs/common':
-        specifier: ^10.0.0
-        version: 10.4.1(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      '@packages/nest-utilities':
-        specifier: workspace:*
-        version: link:../nest-utilities
-      drizzle-orm:
-        specifier: ^0.30.9
-        version: 0.30.10(@types/pg@8.11.6)(@types/react@18.3.3)(knex@3.1.0(pg@8.12.0))(kysely@0.27.4)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1)
-      postgres:
-        specifier: ^3.4.4
-        version: 3.4.4
     devDependencies:
       '@tooling/typescript-config':
         specifier: workspace:*
@@ -11826,7 +11795,8 @@ snapshots:
 
   postgres-range@1.1.4: {}
 
-  postgres@3.4.4: {}
+  postgres@3.4.4:
+    optional: true
 
   preact-render-to-string@5.2.6(preact@10.23.2):
     dependencies:

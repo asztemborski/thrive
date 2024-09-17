@@ -1,7 +1,7 @@
 export type EntityId = string;
 
 export abstract class EntityBase<T = EntityId> {
-  private _id: T;
+  protected _id: T;
 
   constructor(id: T) {
     this.id = id;

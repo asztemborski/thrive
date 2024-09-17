@@ -1,10 +1,10 @@
 import { AggregateRoot } from '@packages/nest-ddd';
 import { WorkspaceDetails } from '../value-objects';
-import { Thread } from './thread.entity';
 import { Collection } from '@mikro-orm/core';
 import { Member } from './member.entity';
 import { WorkspaceMemberAlreadyExistsException } from '../exceptions';
 import { Owner } from '../value-objects/owner.value-object';
+import { WorkspaceCreatedDomainEvent } from '../events';
 
 type CreateWorkspaceProperties = {
   name: string;
@@ -14,15 +14,14 @@ type CreateWorkspaceProperties = {
 
 export class Workspace extends AggregateRoot<string> {
   private _details: WorkspaceDetails;
-  private _threads: Collection<Thread>;
   private _members: Collection<Member>;
 
   constructor({ name, description, owner }: CreateWorkspaceProperties) {
     super(crypto.randomUUID());
     this._details = new WorkspaceDetails({ name, description });
-    this._threads = new Collection<Thread>(this);
     this._members = new Collection<Member>(this);
     this.addMember(owner.id, owner.name);
+    this.addEvent(new WorkspaceCreatedDomainEvent(this));
   }
 
   updateDetails(details: WorkspaceDetails) {
@@ -41,16 +40,8 @@ export class Workspace extends AggregateRoot<string> {
     return this._details;
   }
 
-  get threads(): Collection<Thread> {
-    return this._threads;
-  }
-
   get members(): Collection<Member> {
     return this._members;
-  }
-
-  private set threads(value: Collection<Thread>) {
-    this._threads = value;
   }
 
   private set members(value: Collection<Member>) {

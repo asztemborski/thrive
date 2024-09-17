@@ -7,6 +7,7 @@ import { RedisConfig } from './common/config/redis.config';
 import { WorkspaceModule } from './workspace/workspace.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { PostgreSqlDriver } from '@mikro-orm/postgresql';
+import { ThreadModule } from './thread/thread.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { PostgreSqlDriver } from '@mikro-orm/postgresql';
       inject: [RedisConfig],
       useFactory: (redisConfig: RedisConfig) => redisConfig,
     }),
+    ThreadModule,
     WorkspaceModule,
   ],
   controllers: [],

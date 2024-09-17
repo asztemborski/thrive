@@ -1,5 +1,5 @@
 import { EntitySchema } from '@mikro-orm/core';
-import { Thread, Workspace } from '../../domain/entities';
+import { Workspace } from '../../domain/entities';
 import { Member } from '../../domain/entities/member.entity';
 
 import { WorkspaceDetails } from '../../domain/value-objects';
@@ -21,11 +21,6 @@ export const WorkspaceEntitySchema = new EntitySchema<WorkspaceEntityProperties>
       kind: '1:m',
       entity: () => Member,
       mappedBy: (member) => member.workspaceId,
-    },
-    threads: {
-      kind: '1:m',
-      entity: () => Thread,
-      mappedBy: (thread) => thread.workspaceId,
     },
   },
   schema: 'collaboration',
