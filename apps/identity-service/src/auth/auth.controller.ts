@@ -34,12 +34,8 @@ export class PublicAuthController {
     description: 'Authenticates and retrieves user auth tokens',
   })
   async authenticate(@Body() request: AuthenticateRequestDto): Promise<AuthTokensDto | undefined> {
-    try {
-      const command = new AuthenticateCommand(request);
-      return this.commandBus.execute(command);
-    } catch (err) {
-      console.log(err);
-    }
+    const command = new AuthenticateCommand(request);
+    return this.commandBus.execute(command);
   }
 
   @Post('refresh')

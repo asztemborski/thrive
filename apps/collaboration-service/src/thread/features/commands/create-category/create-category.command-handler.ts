@@ -12,7 +12,7 @@ export class CreateCategoryCommandHandler implements ICommandHandler<CreateCateg
     private readonly workspaceThreadsRepository: WorkspaceThreadsRepository,
   ) {}
 
-  async execute(command: CreateCategoryCommand): Promise<any> {
+  async execute(command: CreateCategoryCommand): Promise<void> {
     const workspaceThreads = await this.workspaceThreadsRepository.findOne(command.workspaceId);
 
     if (!workspaceThreads) {

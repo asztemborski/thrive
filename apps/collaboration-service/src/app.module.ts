@@ -14,14 +14,11 @@ import { ThreadModule } from './thread/thread.module';
     TypedConfigModule.forRoot(configOptions),
     MikroOrmModule.forRootAsync({
       inject: [DatabaseConfig],
-      useFactory: ({ host, database, user, password }: DatabaseConfig) => ({
+      useFactory: ({  database, ...config }: DatabaseConfig) => ({
         driver: PostgreSqlDriver,
         dbName: database,
-        host,
-        user,
-        password,
+        ...config,
         autoLoadEntities: true,
-        debug: true,
       }),
     }),
     RedisModule.forRootAsync({

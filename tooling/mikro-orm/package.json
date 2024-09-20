@@ -7,9 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@mikro-orm/cli": "^6.3.9",
-    "@mikro-orm/migrations": "^6.3.9",
-    "@mikro-orm/postgresql": "^6.3.9",
+    "@mikro-orm/cli": "^6.3.10",
+    "@mikro-orm/migrations": "^6.3.10",
+    "@mikro-orm/postgresql": "^6.3.10",
     "identity-service": "workspace:*",
     "collaboration-service": "workspace:*",
     "ts-node": "^10.9.1",

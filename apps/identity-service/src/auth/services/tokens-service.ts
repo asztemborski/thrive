@@ -3,7 +3,6 @@ import { InjectRedis } from '@packages/nest-redis';
 import { JwtService } from '@nestjs/jwt';
 import ms, { StringValue } from 'ms';
 import Redis from 'ioredis';
-import { v4 as uuid } from 'uuid';
 
 import { ITokenService } from '../contracts';
 import { AuthTokensDto, UserClaimsDto } from '../dtos';
@@ -43,7 +42,7 @@ export class TokensService implements ITokenService {
   }
 
   async generateCustomToken(key: string, value: string, expiration: StringValue): Promise<string> {
-    const token = uuid();
+    const token = crypto.randomUUID()
     await this.redis.set(`${key}-${token}`, value, 'PX', ms(expiration));
     return token;
   }
