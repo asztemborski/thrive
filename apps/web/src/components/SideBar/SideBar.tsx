@@ -14,7 +14,7 @@ import { usePathname } from '@/libs/navigation';
 
 import identityApiClient from '@/api/identity/identityApiClient';
 import { SessionProvider, signOut, useSession } from 'next-auth/react';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import SideBarButton from '@/components/SideBarButton/SideBarButton';
 import collaborationApiClient from '@/api/collaboration/collaborationApiClient';
 
@@ -62,7 +62,6 @@ const SideNavigationBar = () => {
   useEffect(() => {
     const fetchUserWorkspaces = async (): Promise<void> => {
       const response = await collaborationApiClient.getWorkspacesRequest();
-      console.log(response);
       setWorkspaces(response);
       setIsLoading(false);
     };
@@ -76,6 +75,16 @@ const SideNavigationBar = () => {
     const id = pathname.split('/')[2];
     setCurrentWorkspaceId(id);
   }, [pathname]);
+
+  const logout = useCallback(async () => {
+    await signOut();
+  }, [router, session]);
+
+  useEffect(() => {
+    if (session?.error) {
+      void logout();
+    }
+  }, [session, logout]);
 
   const currentWorkspace = workspaces.find((workspace) => workspace.id === currentWorkspaceId);
 

@@ -13,6 +13,7 @@ module.exports = {
     "no-void": "off",
     "no-useless-constructor": "off",
     "no-unsafe-declaration-merging": "off",
+    "no-use-before-define": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
       {

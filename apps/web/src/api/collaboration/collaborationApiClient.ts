@@ -21,6 +21,17 @@ type CreateWorkspaceRequest = {
 
 type CreateWorkspaceThreadRequest = {
   name: string;
+  categoryId?: string;
+};
+
+type CreateWorkspaceCategoryRequest = {
+  name: string;
+  parentCategoryId?: string;
+};
+
+type GetWorkspaceThreadsResponse = {
+  categories: { id: string; name: string; parentCategoryId?: string }[];
+  threads: { id: string; name: string; categoryId?: string }[];
 };
 
 const getWorkspacesRequest = async (): Promise<GetWorkspacesResponse> => {
@@ -38,14 +49,31 @@ const createWorkspaceRequest = async (body: CreateWorkspaceRequest): Promise<str
   return response.data;
 };
 
+const getWorkspaceThreadsRequest = async (id: string): Promise<GetWorkspaceThreadsResponse> => {
+  const response = await client.get(`${COLLABORATION_ROUTE}/private/workspace/${id}/threads`);
+  return response.data;
+};
+
 const createWorkspaceThreadRequest = async (
   workspaceId: string,
   body: CreateWorkspaceThreadRequest,
 ) => {
   const response = await client.post(
-    `${COLLABORATION_ROUTE}/workspace/${workspaceId}/thread`,
+    `${COLLABORATION_ROUTE}/private/workspace/${workspaceId}/thread`,
     body,
   );
+  return response.data;
+};
+
+const createWorkspaceCategory = async (
+  workspaceId: string,
+  data: CreateWorkspaceCategoryRequest,
+) => {
+  const response = await client.post(
+    `${COLLABORATION_ROUTE}/private/workspace/${workspaceId}/category`,
+    data,
+  );
+
   return response.data;
 };
 
@@ -54,6 +82,8 @@ const requests = {
   createWorkspaceRequest,
   getWorkspaceRequest,
   createWorkspaceThreadRequest,
+  getWorkspaceThreadsRequest,
+  createWorkspaceCategory,
 };
 
 export default requests;

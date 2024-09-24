@@ -1,4 +1,4 @@
-import { CanActivate, ExecutionContext, Inject, Injectable } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 
 import { UserPayload } from '@packages/nest-api';
 import { IWorkspaceRepository } from '../../workspace/contracts';

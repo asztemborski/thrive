@@ -18,20 +18,22 @@ import {
   IconSettings,
   IconUserPlus,
 } from '@tabler/icons-react';
-import ScrollArea from '@/components/ScrollArea/ScrollArea';
 
-import CreateThreadDialog from '@/components/CreateThreadDIalog/CreateThreadDialog';
 import MessagesProvider from '@/containers/MessagesProvider';
 import { INPUT_ERROR_MESSAGES } from '@/constants/translations';
+import ThreadsTree from '@/components/ThreadsTree/ThreadsTree';
 
 type WorkspaceDashboardPageProps = {
   params: { workspaceId: string };
 };
 
 export default async function WorkspaceDashboardPage({ params }: WorkspaceDashboardPageProps) {
-  const workspace = await collaborationApiClient.getWorkspaceRequest(params.workspaceId);
+  const { workspaceId } = params;
 
-  console.log(workspace);
+  const [workspace, workspaceThreads] = await Promise.all([
+    collaborationApiClient.getWorkspaceRequest(workspaceId),
+    collaborationApiClient.getWorkspaceThreadsRequest(workspaceId),
+  ]);
 
   return (
     <div className="flex  h-full ">
@@ -79,12 +81,13 @@ export default async function WorkspaceDashboardPage({ params }: WorkspaceDashbo
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <ScrollArea className="flex flex-col flex-1"></ScrollArea>
-          <div className="flex align-bottom py-5 items-center justify-center">
-            <MessagesProvider namespaces={[INPUT_ERROR_MESSAGES]}>
-              <CreateThreadDialog workspaceId={workspace.id} />
-            </MessagesProvider>
-          </div>
+          <MessagesProvider namespaces={[INPUT_ERROR_MESSAGES]}>
+            <ThreadsTree
+              workspaceId={workspace.id}
+              categories={workspaceThreads.categories}
+              threads={workspaceThreads.threads}
+            />
+          </MessagesProvider>
         </ResizablePanel>
         <ResizableHandle />
         <ResizablePanel className="bg-[#101214]" minSize={80}></ResizablePanel>

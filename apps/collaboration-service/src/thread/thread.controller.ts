@@ -26,7 +26,7 @@ export class PrivateThreadController {
     @Body() request: CreateCategoryRequestDto,
   ): Promise<void> {
     const command = new CreateCategoryCommand({ workspaceId, ...request });
-    await this.commandBus.execute(command);
+    return await this.commandBus.execute(command);
   }
 
   @Post('/thread')
@@ -35,6 +35,6 @@ export class PrivateThreadController {
     @Body() request: CreateThreadRequestDto,
   ): Promise<void> {
     const command = new CreateThreadCommand({ workspaceId, ...request });
-    await this.commandBus.execute(command);
+    return await this.commandBus.execute(command);
   }
 }

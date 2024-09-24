@@ -1,33 +1,28 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/Dialog';
-import Button from '@/components/Button';
+import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/Dialog';
+
 import CreateThreadForm from '@/forms/CreateThreadForm/CreateThreadForm';
+import { Thread } from '@/components/ThreadsTree';
 
 type CreateThreadDialogProps = {
   workspaceId: string;
+  onSuccess?: (createdThread: Thread) => void;
+  categoryId?: string;
 };
 
-export default function CreateThreadDialog({ workspaceId }: CreateThreadDialogProps) {
+export default function CreateThreadDialog({
+  workspaceId,
+  onSuccess,
+  categoryId,
+}: CreateThreadDialogProps) {
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="secondary">Add thread</Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Create thread</DialogTitle>
-          <DialogDescription>Fill the data below to create your thread</DialogDescription>
-        </DialogHeader>
-        <div>
-          <CreateThreadForm workspaceId={workspaceId} />
-        </div>
-      </DialogContent>
-    </Dialog>
+    <DialogContent>
+      <DialogHeader>
+        <DialogTitle>Create thread</DialogTitle>
+        <DialogDescription>Fill the data below to create your thread</DialogDescription>
+      </DialogHeader>
+      <div>
+        <CreateThreadForm workspaceId={workspaceId} onSuccess={onSuccess} categoryId={categoryId} />
+      </div>
+    </DialogContent>
   );
 }

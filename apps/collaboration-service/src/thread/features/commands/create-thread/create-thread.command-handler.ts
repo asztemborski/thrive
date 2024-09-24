@@ -12,7 +12,7 @@ export class CreateThreadCommandHandler implements ICommandHandler<CreateThreadC
     private readonly workspaceThreadsRepository: EntityRepository<WorkspaceThreads>,
   ) {}
 
-  async execute(command: CreateThreadCommand): Promise<void> {
+  async execute(command: CreateThreadCommand): Promise<string> {
     const workspaceThreads = await this.workspaceThreadsRepository.findOne(command.workspaceId);
 
     if (!workspaceThreads) {
@@ -21,7 +21,8 @@ export class CreateThreadCommandHandler implements ICommandHandler<CreateThreadC
 
     await workspaceThreads.categories.init();
     await workspaceThreads.threads.init();
-    workspaceThreads.addThread(command.name, command.categoryId);
+    const createdThreadId = workspaceThreads.addThread(command.name, command.categoryId);
     await this.workspaceThreadsRepository.getEntityManager().flush();
+    return createdThreadId;
   }
 }

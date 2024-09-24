@@ -26,9 +26,7 @@ export const UNAUTHORIZED_ERROR_RESPONSE: ErrorResponse = {
 };
 
 const isApiError = (error: unknown): error is ErrorResponse => {
-  if (error && typeof error === 'object' && 'code' in error && 'title' in error) return true;
-
-  return false;
+  return !!(error && typeof error === 'object' && 'code' in error && 'title' in error);
 };
 
 export default isApiError;

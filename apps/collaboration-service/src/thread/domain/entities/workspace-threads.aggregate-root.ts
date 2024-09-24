@@ -1,5 +1,5 @@
 import { AggregateRoot } from '@packages/nest-ddd';
-import { Collection, EntityRepository, EntityRepositoryType } from '@mikro-orm/core';
+import { Collection, EntityRepositoryType } from '@mikro-orm/core';
 import { Thread } from './thread.entity';
 import { ThreadCategory } from './thread-category.entity';
 import {
@@ -24,7 +24,7 @@ export class WorkspaceThreads extends AggregateRoot {
     this._threads = new Collection<Thread>(this);
   }
 
-  addThread(name: string, categoryId?: string): void {
+  addThread(name: string, categoryId?: string): string {
     if (this._threads.count() > 100) {
       throw new ThreadMaximumCountExceedException(100);
     }
@@ -37,16 +37,18 @@ export class WorkspaceThreads extends AggregateRoot {
     this._threads.add(thread);
 
     categoryId && thread.assignToCategory(categoryId);
+    return thread.id;
   }
 
-  addCategory(name: string, parentCategoryId?: string): void {
+  addCategory(name: string, parentCategoryId?: string): string {
     if (this._categories.count() > 30) {
       throw new CategoryMaximumCountExceedException(30);
     }
 
     if (!parentCategoryId) {
       const category = new ThreadCategory({ name, workspaceId: this._id });
-      return this._categories.add(category);
+      this._categories.add(category);
+      return category.id;
     }
 
     const parentCategory = this.findCategory(parentCategoryId);
@@ -57,6 +59,7 @@ export class WorkspaceThreads extends AggregateRoot {
 
     const subCategory = parentCategory.addSubCategory(name);
     this._categories.add(subCategory);
+    return subCategory.id;
   }
 
   private findCategory(id: string): ThreadCategory | undefined {

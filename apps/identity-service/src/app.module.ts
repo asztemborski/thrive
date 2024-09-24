@@ -4,7 +4,7 @@ import { TypedConfigModule } from 'nest-typed-config';
 import { RabbitmqModule } from '@packages/nest-rabbitmq';
 import { RedisModule } from '@packages/nest-redis';
 
-import { AppConfig, configOptions, DatabaseConfig, RabbitmqConfig, RedisConfig } from './config';
+import { configOptions, DatabaseConfig, RabbitmqConfig, RedisConfig } from './config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
@@ -15,12 +15,10 @@ import { PostgreSqlDriver } from '@mikro-orm/postgresql';
     TypedConfigModule.forRoot(configOptions),
     MikroOrmModule.forRootAsync({
       inject: [DatabaseConfig],
-      useFactory: ({ host, database, user, password }: DatabaseConfig) => ({
+      useFactory: ({ database, ...config }: DatabaseConfig) => ({
         driver: PostgreSqlDriver,
         dbName: database,
-        host,
-        user,
-        password,
+        ...config,
         autoLoadEntities: true,
       }),
     }),

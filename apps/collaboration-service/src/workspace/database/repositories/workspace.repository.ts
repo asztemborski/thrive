@@ -1,6 +1,6 @@
 import { IWorkspaceRepository } from '../../contracts';
 import { Workspace } from '../../domain/entities';
-import { EntityManager, EntityRepository } from '@mikro-orm/core';
+import { EntityRepository } from '@mikro-orm/core';
 import { Member } from '../../domain/entities/member.entity';
 
 export class WorkspaceRepository

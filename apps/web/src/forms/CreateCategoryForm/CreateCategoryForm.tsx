@@ -5,43 +5,47 @@ import FormField from '@/components/FormField';
 import Input from '@/components/Input';
 import { DialogFooter } from '@/components/Dialog';
 import Button from '@/components/Button';
-import CREATE_THREAD_FORM_RULES from '@/forms/CreateThreadForm/createThreadFormRules';
+
 import { retrieveErrorTranslation } from '@/utilities/form';
 import { useTranslations } from 'next-intl';
 import { INPUT_ERROR_MESSAGES } from '@/constants/translations';
 import collaborationApiClient from '@/api/collaboration/collaborationApiClient';
-import { Thread } from '@/components/ThreadsTree';
+import CREATE_CATEGORY_FORM_RULES from '@/forms/CreateCategoryForm/createCategoryFormRules';
 
-export type CreateThreadFormValues = {
+export type CreateCategoryFormValues = {
   name: string;
 };
 
-type CreateThreadFormProps = {
+type CreateCategoryFormProps = {
   workspaceId: string;
-  onSuccess?: (createdThread: Thread) => void;
-  categoryId?: string;
+  onSuccess?: (createdCategory: { id: string } & CreateCategoryFormValues) => void;
+  parentCategoryId?: string;
 };
 
-const DEFAULT_FORM_VALUES: CreateThreadFormValues = {
+const DEFAULT_FORM_VALUES: CreateCategoryFormValues = {
   name: '',
 };
 
-const CreateThreadForm = ({ workspaceId, onSuccess, categoryId }: CreateThreadFormProps) => {
+const CreateCategoryForm = ({
+  workspaceId,
+  onSuccess,
+  parentCategoryId,
+}: CreateCategoryFormProps) => {
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<CreateThreadFormValues>({
+  } = useForm<CreateCategoryFormValues>({
     defaultValues: DEFAULT_FORM_VALUES,
   });
 
-  const onSubmit = async (data: CreateThreadFormValues) => {
-    const id = await collaborationApiClient.createWorkspaceThreadRequest(workspaceId, {
+  const onSubmit = async (data: CreateCategoryFormValues) => {
+    const createdCategoryId = await collaborationApiClient.createWorkspaceCategory(workspaceId, {
       ...data,
-      categoryId,
+      parentCategoryId,
     });
 
-    onSuccess && onSuccess({ ...data, id, categoryId });
+    onSuccess && onSuccess({ id: createdCategoryId, ...data });
   };
 
   const inputErrorsTranslations = useTranslations(INPUT_ERROR_MESSAGES);
@@ -53,8 +57,8 @@ const CreateThreadForm = ({ workspaceId, onSuccess, categoryId }: CreateThreadFo
         fieldName="name"
         placeholder="Name"
         control={control}
-        rules={CREATE_THREAD_FORM_RULES.name}
-        error={retrieveErrorTranslation<CreateThreadFormValues>(
+        rules={CREATE_CATEGORY_FORM_RULES.name}
+        error={retrieveErrorTranslation<CreateCategoryFormValues>(
           inputErrorsTranslations,
           errors,
           'name',
@@ -73,4 +77,4 @@ const CreateThreadForm = ({ workspaceId, onSuccess, categoryId }: CreateThreadFo
   );
 };
 
-export default CreateThreadForm;
+export default CreateCategoryForm;

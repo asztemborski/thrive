@@ -1,12 +1,13 @@
 import { CustomMiddleware } from '@/middlewares/chain';
 import { NextFetchEvent, NextRequest, NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';
+
 import { LOCALES } from '@/constants/translations';
 import {
   DEFAULT_AUTHENTICATED_ROUTE,
   DEFAULT_UNAUTHENTICATED_ROUTE,
   PUBLIC_ROUTES,
 } from '@/constants/routes';
+import { getToken } from 'next-auth/jwt';
 
 const withAuthMiddleware = (middleware: CustomMiddleware) => {
   return async (request: NextRequest, event: NextFetchEvent, response: NextResponse) => {

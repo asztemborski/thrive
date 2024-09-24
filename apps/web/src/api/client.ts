@@ -14,6 +14,7 @@ client.interceptors.response.use(undefined, async ({ response }) => {
 
   if (data.statusCode === 401) {
     client.defaults.headers.common.Authorization = undefined;
+    return await signOut();
   }
 
   if (data.statusCode) {

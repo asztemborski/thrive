@@ -12,7 +12,7 @@ export class CreateCategoryCommandHandler implements ICommandHandler<CreateCateg
     private readonly workspaceThreadsRepository: WorkspaceThreadsRepository,
   ) {}
 
-  async execute(command: CreateCategoryCommand): Promise<void> {
+  async execute(command: CreateCategoryCommand): Promise<string> {
     const workspaceThreads = await this.workspaceThreadsRepository.findOne(command.workspaceId);
 
     if (!workspaceThreads) {
@@ -20,7 +20,8 @@ export class CreateCategoryCommandHandler implements ICommandHandler<CreateCateg
     }
 
     await workspaceThreads.categories.init();
-    workspaceThreads.addCategory(command.name, command.parentCategoryId);
+    const createdCategoryId = workspaceThreads.addCategory(command.name, command.parentCategoryId);
     await this.workspaceThreadsRepository.getEntityManager().flush();
+    return createdCategoryId;
   }
 }

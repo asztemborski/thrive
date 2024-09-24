@@ -1,5 +1,5 @@
 import { Workspace } from '../domain/entities';
-import { EntityRepository, Loaded } from '@mikro-orm/core';
+import { EntityRepository } from '@mikro-orm/core';
 
 export interface IWorkspaceRepository extends EntityRepository<Workspace> {
   exists(workspaceId: string): Promise<boolean>;
