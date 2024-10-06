@@ -6,6 +6,7 @@ import { CreateCategoryRequestDto, CreateThreadRequestDto } from './dtos';
 import { CreateThreadCommand } from './features/commands/create-thread';
 import { WorkspaceThreadsQuery } from './features/queries';
 import { EntityDTO } from '@mikro-orm/core';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @PrivateController({ version: '1', tag: 'workspace', path: 'workspace/:workspaceId' })
 export class PrivateThreadController {
@@ -15,12 +16,21 @@ export class PrivateThreadController {
   ) {}
 
   @Get('/threads')
+  @ApiResponse({ status: 200 })
+  @ApiResponse({ status: 401 })
+  @ApiOperation({
+    summary: 'Retrieves workspace threads.',
+    description: `Retrieves all threads associated with the workspace`,
+  })
   async getThreads(@Param('workspaceId') workspaceId: string): Promise<EntityDTO<unknown>> {
     const query = new WorkspaceThreadsQuery(workspaceId);
     return await this.queryBus.execute(query);
   }
 
   @Post('/category')
+  @ApiResponse({ status: 201 })
+  @ApiResponse({ status: 401 })
+  @ApiOperation({ summary: 'Creates new category.', description: `Creates new thread category` })
   async createCategory(
     @Param('workspaceId') workspaceId: string,
     @Body() request: CreateCategoryRequestDto,
@@ -30,6 +40,9 @@ export class PrivateThreadController {
   }
 
   @Post('/thread')
+  @ApiResponse({ status: 201 })
+  @ApiResponse({ status: 401 })
+  @ApiOperation({ summary: 'Creates new thread.', description: `Creates new workspace thread` })
   async createThread(
     @Param('workspaceId') workspaceId: string,
     @Body() request: CreateThreadRequestDto,
