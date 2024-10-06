@@ -10,7 +10,7 @@ RUN pnpm install turbo --global
 COPY . .
 RUN turbo prune collaboration-service --docker
 
-FROM base as runner
+FROM base AS runner
 WORKDIR /app
 
 COPY --from=builder /app/out/json/ .

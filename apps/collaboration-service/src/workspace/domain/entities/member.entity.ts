@@ -8,7 +8,7 @@ type CreateMemberProperties = {
 
 export class Member extends EntityBase<string> {
   private readonly _name: string;
-  private _workspaceId: string;
+  private readonly _workspaceId: string;
 
   constructor({ id, name, workspaceId }: CreateMemberProperties) {
     super(id);
@@ -22,9 +22,5 @@ export class Member extends EntityBase<string> {
 
   get workspaceId(): string {
     return this._workspaceId;
-  }
-
-  private set workspaceId(value: string) {
-    this._workspaceId = value;
   }
 }

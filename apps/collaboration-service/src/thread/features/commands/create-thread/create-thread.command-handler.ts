@@ -19,8 +19,7 @@ export class CreateThreadCommandHandler implements ICommandHandler<CreateThreadC
       throw new WorkspaceThreadsNotFoundException(command.workspaceId);
     }
 
-    await workspaceThreads.categories.init();
-    await workspaceThreads.threads.init();
+    await Promise.all([workspaceThreads.categories.init(), workspaceThreads.threads.init()]);
     const createdThreadId = workspaceThreads.addThread(command.name, command.categoryId);
     await this.workspaceThreadsRepository.getEntityManager().flush();
     return createdThreadId;

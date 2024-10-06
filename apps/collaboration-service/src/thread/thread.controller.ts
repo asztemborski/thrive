@@ -7,7 +7,7 @@ import { CreateThreadCommand } from './features/commands/create-thread';
 import { WorkspaceThreadsQuery } from './features/queries';
 import { EntityDTO } from '@mikro-orm/core';
 
-@PrivateController({ version: '1', path: 'workspace/:workspaceId' })
+@PrivateController({ version: '1', tag: 'workspace', path: 'workspace/:workspaceId' })
 export class PrivateThreadController {
   constructor(
     private readonly commandBus: CommandBus,

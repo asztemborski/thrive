@@ -5,9 +5,9 @@ import { isString } from "@packages/nest-utilities";
 export const PublicController = ({
   path,
   ...options
-}: ControllerOptions): ClassDecorator => {
+}: ControllerOptions & { tag?: string }): ClassDecorator => {
   return applyDecorators(
-    ApiTags(isString(path) ? path : ""),
+    ApiTags(options.tag ?? (isString(path) ? path : "")),
     Controller({ ...options, path: `public/${path}` }),
   );
 };

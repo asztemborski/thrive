@@ -8,13 +8,14 @@ import { WorkspaceModule } from './workspace/workspace.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { PostgreSqlDriver } from '@mikro-orm/postgresql';
 import { ThreadModule } from './thread/thread.module';
+import { InvitationModule } from './invitation/invitation.module';
 
 @Module({
   imports: [
     TypedConfigModule.forRoot(configOptions),
     MikroOrmModule.forRootAsync({
       inject: [DatabaseConfig],
-      useFactory: ({  database, ...config }: DatabaseConfig) => ({
+      useFactory: ({ database, ...config }: DatabaseConfig) => ({
         driver: PostgreSqlDriver,
         dbName: database,
         ...config,
@@ -25,6 +26,7 @@ import { ThreadModule } from './thread/thread.module';
       inject: [RedisConfig],
       useFactory: (redisConfig: RedisConfig) => redisConfig,
     }),
+    InvitationModule,
     ThreadModule,
     WorkspaceModule,
   ],

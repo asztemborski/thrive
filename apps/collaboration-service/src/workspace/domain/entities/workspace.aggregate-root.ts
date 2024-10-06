@@ -5,6 +5,7 @@ import { Member } from './member.entity';
 import { WorkspaceMemberAlreadyExistsException } from '../exceptions';
 import { Owner } from '../value-objects/owner.value-object';
 import { WorkspaceCreatedDomainEvent } from '../events';
+import { ReadonlyCollection } from '@packages/database-utilities';
 
 type CreateWorkspaceProperties = {
   name: string;
@@ -14,7 +15,7 @@ type CreateWorkspaceProperties = {
 
 export class Workspace extends AggregateRoot<string> {
   private _details: WorkspaceDetails;
-  private _members: Collection<Member>;
+  private readonly _members: Collection<Member>;
 
   constructor({ name, description, owner }: CreateWorkspaceProperties) {
     super(crypto.randomUUID());
@@ -33,18 +34,14 @@ export class Workspace extends AggregateRoot<string> {
       throw new WorkspaceMemberAlreadyExistsException();
     }
 
-    this.members.add(new Member({ id, name, workspaceId: this.id }));
+    this._members.add(new Member({ id, name, workspaceId: this.id }));
   }
 
   get details(): WorkspaceDetails {
     return this._details;
   }
 
-  get members(): Collection<Member> {
+  get members(): ReadonlyCollection<Member> {
     return this._members;
-  }
-
-  private set members(value: Collection<Member>) {
-    this._members = value;
   }
 }

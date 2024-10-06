@@ -1,27 +1,33 @@
-import { EntitySchema } from '@mikro-orm/core';
+import { Collection, EntitySchema } from '@mikro-orm/core';
 import { Workspace } from '../../domain/entities';
 import { Member } from '../../domain/entities/member.entity';
 
 import { WorkspaceDetails } from '../../domain/value-objects';
 import { WorkspaceRepository } from '../repositories';
 
-type WorkspaceEntityProperties = Omit<Workspace, 'domainEvents'>;
+export type WorkspacePrivateProperties = {
+  _details: WorkspaceDetails;
+  _members: Collection<Member>;
+};
 
-export const WorkspaceEntitySchema = new EntitySchema<WorkspaceEntityProperties>({
+export const WorkspaceEntitySchema = new EntitySchema<unknown>({
   class: Workspace,
   properties: {
-    id: { type: 'uuid', primary: true },
-    details: {
+    _id: { name: 'id', type: 'uuid', primary: true },
+    _details: {
       kind: 'embedded',
       entity: 'WorkspaceDetailsVoSchema',
       prefix: false,
-      onCreate: (workspace) => new WorkspaceDetails(workspace.details.unpack()),
+      onCreate: (workspace: Workspace) => new WorkspaceDetails(workspace.details.unpack()),
     },
-    members: {
+    _members: {
       kind: '1:m',
-      entity: () => Member,
-      mappedBy: (member) => member.workspaceId,
+      entity: Member.name,
+      mappedBy: '_workspaceId',
     },
+    id: { type: 'method', getter: true, persist: false },
+    details: { type: 'method', getter: true, persist: false },
+    members: { type: 'method', getter: true, persist: false },
   },
   schema: 'collaboration',
   repository: () => WorkspaceRepository,

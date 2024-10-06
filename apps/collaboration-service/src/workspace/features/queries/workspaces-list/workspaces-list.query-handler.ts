@@ -15,7 +15,7 @@ export class WorkspacesListQueryHandler implements IQueryHandler<WorkspacesListQ
 
   async execute(query: WorkspacesListQuery): Promise<GetWorkspaceResponseDto[]> {
     const workspaces = await this.workspaceRepository.find({
-      members: { id: query.userId },
+      _members: { id: query.userId },
     });
 
     return workspaces.map((workspace) =>

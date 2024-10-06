@@ -9,6 +9,7 @@ import { PrivateWorkspaceController } from './workspace.controller';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { databaseSchemas } from './database/schemas';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { InvitationModule } from '../invitation/invitation.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     EventEmitterModule.forRoot(),
     CqrsModule,
     CommonModule,
+    InvitationModule,
   ],
   controllers: [PrivateWorkspaceController],
   providers: [...commandHandlers, ...queryHandlers],
